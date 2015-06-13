@@ -1,5 +1,6 @@
 package states;
 import core.InputDelegate;
+import flixel.addons.nape.FlxNapeState;
 import flixel.FlxG;
 import flixel.FlxState;
 import flixel.util.FlxColor;
@@ -8,7 +9,7 @@ import flixel.util.FlxColor;
  * ...
  * @author Oliver Ross
  */
-class BaseState extends FlxState
+class BaseState extends FlxNapeState
 {
 	var _input:InputDelegate;
 	

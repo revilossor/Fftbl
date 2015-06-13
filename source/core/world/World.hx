@@ -16,8 +16,6 @@ class World extends FlxBasic
 	var _map:BinTree<Section>;
 	var _depth:UInt;
 	
-	//var _numberOfSections:UInt = 3; // TODO this will come from elsewhere eventually - ordered struct of custom sections somewhere...
-	
 	public function new() 
 	{
 		trace('construct');
@@ -29,11 +27,11 @@ class World extends FlxBasic
 	function getMaxDepth(total:UInt, ?index:UInt = 1):UInt {
 		return (total >= index) ? getMaxDepth(total - index++, index): index;
 	}
-	function build(remainingDepth:UInt, ?index:Int = 0):BinTree<Section> {		// BUG sometimes there can be a node where value is undefined ( or null if value isnt object ). Handle accordingly.
-		if (index >= Reg.sections.length) { return null; }		// TODO get #sections from wherever resources are stored.... or some global bag of states
+	function build(remainingDepth:UInt, ?index:Int = 0):BinTree<Section> {
+		if (index >= Reg.sections.length) { return null; }
 		var depth:UInt = _depth - remainingDepth;
 		return {
-			value:	{intro:Reg.sections[index].intro, route:Reg.sections[index].route, boss:Reg.sections[index].boss, index:index},	// TODO init section here, so dont need _nodes array
+			value:	{intro:Reg.sections[index].intro, route:Reg.sections[index].route, boss:Reg.sections[index].boss, index:index},
 			left:	remainingDepth == 0 ? null : build(remainingDepth - 1, index + depth + 1),
 			right:	remainingDepth == 0 ? null : build(remainingDepth - 1, index + depth + 2)
 		}

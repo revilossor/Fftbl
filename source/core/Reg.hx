@@ -21,12 +21,12 @@ class Reg
 	public static var sectionTree:BinTree<Section>;
 	public static var sectionStage:SectionStage = SectionStage.Intro;
 }
-enum SectionStage {
+enum SectionStage {	// TODO move to section
 	Intro;
 	Route;
 	Boss;
 }
-enum BossResolution {
+enum BossResolution {	// TODO move to BossState
 	Left;
 	Right;
 }

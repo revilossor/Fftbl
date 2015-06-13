@@ -1,19 +1,16 @@
 package states.section.intro;
 import core.Reg;
 import flixel.FlxG;
-import states.BaseState;
 
 /**
  * ...
  * @author Oliver Ross
  * 
- * Intro event to route / boss
- * 		eg, 	stadium intro / route through changing rooms to exit / power kick gates open
- *		exits to world.map.getNext
- * 		exit to deathstate / mapstate / restart this state or menu?
+ * TODO Intro anim
+ * 		eg, 	stadium intro / route through changing rooms to exit / power kick gates open boss
  * 
  */
-class IntroState extends BaseState
+class IntroState extends SectionState
 {
 
 	override public function create() {

@@ -1,17 +1,16 @@
 package states.section.route;
 import core.Reg;
 import flixel.FlxG;
-import states.BaseState;
+import states.section.SectionState;
 
 /**
  * ...
  * @author Oliver Ross
  * 
  * TODO auto runner bit, with difficulty argument
- * 		exits to world.map.getNext
  * 
  */
-class RouteState extends BaseState
+class RouteState extends SectionState
 {
 
 	override public function create() {

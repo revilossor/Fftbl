@@ -1,16 +1,16 @@
 package states.section.boss;
 import core.Reg;
 import flixel.FlxG;
-import states.BaseState;
+import states.section.SectionState;
 
 /**
  * ...
  * @author Oliver Ross
  * 
  * TODO miniboss - custom event, with difficulty argument
- * 		exits to world.map.left or right
+ * 
  */
-class BossState extends BaseState
+class BossState extends SectionState
 {
 
 	override public function create() {

@@ -1,4 +1,4 @@
-package core.world;
+package core.world.types;
 
 /**
  * @author Oliver Ross

@@ -14,7 +14,7 @@ import flixel.util.FlxSignal.FlxTypedSignal;
 class InputDelegate extends FlxBasic
 {	
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
-	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();	// 
+	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	
 	@isVar 
 	public var enabled(never, set):Bool; var _enabled:Bool = false;

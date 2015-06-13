@@ -7,5 +7,5 @@ import core.world.World;
  */
 class Reg
 {
-	public static var world:World<String>;
+	public static var world:World;
 }

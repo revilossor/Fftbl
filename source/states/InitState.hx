@@ -13,7 +13,7 @@ class InitState extends BaseState
 	override public function create() {
 		super.create();
 		FlxG.camera.bgColor = 0xffff00ff;
-		Reg.world = new World<String>(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']);
+		Reg.world = new World();
 		_input.onReleased.addOnce(function(at:FlxPoint) { fadeToState(PlayState); } );
 	}
 }

@@ -1,4 +1,5 @@
 package core.world.types;
+import flixel.FlxState;
 
 /**
  * @author Oliver Ross
@@ -6,6 +7,9 @@ package core.world.types;
 
 typedef Section =
 {
-	boss:Boss, 
-	route:Route
+	// TODO map screen icon, custom win / death states
+	index:UInt,
+	intro:Class<FlxState>,
+	route:Class<FlxState>,
+	boss:Class<FlxState>
 }

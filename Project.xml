@@ -14,16 +14,16 @@
 	<!--------------------------------WINDOW SETTINGS------------------------------->
 	
 	<!--These window settings apply to all targets-->
-	<window width="600" height="960" fps="60" background="#000000" hardware="true" vsync="true" />
+	<window width="600" height="960" fps="30" background="#000000" hardware="true" vsync="true" />
 	
 	<!--Web-specific-->
-	<window if="web" orientation="portrait"  />
+	<window if="web" orientation="landscape"  />
 	
 	<!--Desktop-specific-->
-	<window if="desktop" orientation="portrait" fullscreen="false" resizable="true" />
+	<window if="desktop" orientation="landscape" fullscreen="false" resizable="false" />
 	
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="portrait" fullscreen="true" width="0" height="0" />	<!--BUG is this correcct? check in work-->
+	<window if="mobile" orientation="landscape" fullscreen="true" width="600" height="960" />	<!--BUG is this correcct? check in work-->
 	
 	<!--------------------------------PATHS SETTINGS-------------------------------->
 	
@@ -47,7 +47,7 @@
 	<!--------------------------------HAXEDEFINES----------------------------------->
 	
 	<!--Enable the Flixel core recording system-->
-	<haxedef name="FLX_RECORD" />
+	<!--haxedef name="FLX_RECORD" /-->
 	
 	<!--Disable the right and middle mouse buttons-->
 	<!--haxedef name="FLX_NO_MOUSE_ADVANCED" /-->

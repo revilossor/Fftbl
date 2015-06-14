@@ -1,6 +1,5 @@
 package core.entity;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
 
 /**
  * ...
@@ -8,10 +7,10 @@ import flixel.group.FlxGroup;
  */
 class Entity extends FlxSprite
 {
-	public function new() 
+	public function new(?xp:Float = 0, ?yp:Float = 0, ?graphic:Dynamic) 
 	{
 		trace('create');
-		super();
+		super(xp, yp, graphic);
 	}
-	
+	// TODO destruction tells xml loaded level model entity with this id has been destroyed
 }

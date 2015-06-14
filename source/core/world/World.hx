@@ -38,12 +38,12 @@ class World extends FlxBasic
 	}
 	
 	public function getCurrentIntro():Class<FlxState> { 
-		return Reg.sectionTree.value.intro == null ?// TODO detect if at end ( ie, no more map ) and goto end state. 
+		return Reg.sectionTree.value.intro == null ?
 					WinState:
 					Reg.sectionTree.value.intro;
 	}
 	public function getNext(?direction:BossResolution):Class<FlxState> {
-		trace('get next - currently at node ${Reg.sectionTree.value.index} InputDelegate stage ${Reg.sectionStage}');
+		trace('get next - currently at node ${Reg.sectionTree.value.index} in stage ${Reg.sectionStage}');
 		switch(Reg.sectionStage) {
 			case SectionStage.Intro	:
 				Reg.sectionStage = SectionStage.Route;
@@ -55,22 +55,18 @@ class World extends FlxBasic
 				Reg.sectionStage = SectionStage.Intro;
 				if (direction == BossResolution.Right) {
 					var tree = Reg.sectionTree.right;
-					tree == null ?
-						return WinState:
-						Reg.sectionTree = tree;
+					tree == null ? return WinState : Reg.sectionTree = tree;
 					return getCurrentIntro();
 				}else if (direction == BossResolution.Left) {
 					var tree = Reg.sectionTree.left;
-					tree == null ?
-						return WinState:
-						Reg.sectionTree = tree;
+					tree == null ? return WinState : Reg.sectionTree = tree;
 					return getCurrentIntro();
 				}else {
 					trace('ERROR! tried to getNext when on boss stage, and didnt pass a resolution!');
 					return getCurrentIntro();
 				}
 			default : trace('ERROR! tried to getNext but Reg.sectionStage wasnt recognised!');
-		}		// TODO detect end state somehow
+		}
 		return getCurrentIntro();
 	}
 	

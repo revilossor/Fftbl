@@ -1,5 +1,5 @@
 package states.section;
-import states.BaseState;
+import states.PhysicsState;
 
 /**
  * ...
@@ -7,9 +7,9 @@ import states.BaseState;
  * 
  * TODO exit to deathstate
  */
-class SectionState extends BaseState
+class SectionState extends PhysicsState
 {
 	override public function create() {
 		super.create();
-	}	
+	}
 }

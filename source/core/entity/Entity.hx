@@ -12,5 +12,10 @@ class Entity extends FlxSprite
 		trace('create');
 		super(xp, yp, graphic);
 	}
+	override public function update() {
+		if (!Reg.isPaused) {
+			super.update();
+		}
+	}
 	// TODO destruction tells xml loaded level model entity with this id has been destroyed
 }

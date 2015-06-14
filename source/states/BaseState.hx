@@ -1,5 +1,6 @@
 package states;
 import core.InputDelegate;
+import core.Reg;
 import core.ui.HUD;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -13,19 +14,18 @@ import flixel.util.FlxColor;
  */
 class BaseState extends FlxState
 {
-	var _input:InputDelegate;
 	var _hud:HUD;
 	
 	override public function create() {
-		super.create();
 		trace('construct');
-		FlxG.camera.fade(FlxColor.BLACK, 1, true, function() { _input.enabled = true; } );
-		add(_input = new InputDelegate());
+		super.create();
+		add(Reg.input = new InputDelegate());
 		add(_hud = new HUD());
+		FlxG.camera.fade(FlxColor.BLACK, 1, true, function() { Reg.input.enabled = true; } );
 	}
 	
 	function fadeToState(state:Class<FlxState>, ?args:Array<Dynamic> = null) {
-		_input.enabled = false;
+		Reg.input.enabled = false;
 		FlxG.camera.fade(FlxColor.BLACK, 1, false, function() { FlxG.switchState(Type.createInstance(state, args == null ? [] : args)); } );
 	}
 	

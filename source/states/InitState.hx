@@ -1,4 +1,5 @@
 package states;
+import core.InputDelegate;
 import core.Reg;
 import core.world.World;
 import flixel.FlxG;
@@ -17,6 +18,6 @@ class InitState extends BaseState		// TODO some of the init stuff in here might 
 		Reg.world = new World();
 		Reg.sectionStage = SectionStage.Intro;
 		//_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );
-		_input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getCurrentIntro()); } );
+		Reg.input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getCurrentIntro()); } );
 	}
 }

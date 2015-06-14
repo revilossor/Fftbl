@@ -11,7 +11,7 @@ import nape.shape.Shape;
  */
 class PhysicsEntity extends PoolableEntity
 {
-	public var body:Body;
+	public var body:Body = new Body();
 	
 	public function new(?xp:Float = 0, ?yp:Float = 0) {
 		super(xp, yp);
@@ -21,19 +21,27 @@ class PhysicsEntity extends PoolableEntity
 	
 	override public function update() {
 		trackBodyPosition();
-		super.update();
-		//trackBodyPosition();
+		super.update(); 
 	}
 	
 	function trackBodyPosition() {
 		if (body == null) { return; }
-		x = body.position.x - width/2;	// TODO may be some anchor point bugs here
-		y = body.position.y- height/2;
+		x = body.position.x - width / 2;
+		y = body.position.y - height / 2;
 		angle = (body.rotation * 180) / Math.PI;
 	}
 	
 	override public function destroy() {
 		body = null;
 		super.destroy();
+	}
+	
+	function makeBoxBody(material:Material) {
+		body.shapes.add(new Polygon(Polygon.box(width, height, true), material));
+		body.position.setxy(x + width / 2, y + height / 2);
+	}
+	function makeCircleBody(material:Material) {
+		body.shapes.add(new Polygon(Polygon.regular(width / 2, height / 2, 32, 0.0, true), material));
+		body.position.setxy(x + width / 2, y + height / 2);
 	}
 }

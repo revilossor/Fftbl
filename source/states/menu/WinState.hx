@@ -1,4 +1,5 @@
 package states.menu;
+import core.Reg;
 import flixel.FlxG;
 import states.menu.MenuState;
 
@@ -14,6 +15,6 @@ class WinState extends BaseState
 		super.create();
 		FlxG.camera.bgColor = 0xff4A73D6;
 		_hud.showTitle('win state');
-		_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );
+		Reg.input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );
 	}		
 }

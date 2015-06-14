@@ -1,6 +1,7 @@
 package core;
 import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.input.FlxSwipe;
 import flixel.util.FlxPoint;
 import flixel.util.FlxSignal.FlxTypedSignal;
 
@@ -15,6 +16,10 @@ class InputDelegate extends FlxBasic
 {	
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
+	public var onSwipeUp:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
+	public var onSwipeDown:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
+	public var onSwipeLeft:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
+	public var onSwipeRight:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	
 	@isVar 
 	public var enabled(never, set):Bool; var _enabled:Bool = false;
@@ -27,6 +32,7 @@ class InputDelegate extends FlxBasic
 			if (FlxG.mouse.justReleased) { _onReleased(); }
 			if (FlxG.mouse.pressed) { _onHeld(); }
 			// TODO FlxG.swipes
+			sortSwipes();
 		}
 	}
 	
@@ -40,6 +46,12 @@ class InputDelegate extends FlxBasic
 	function _onReleased() {
 		trace('mouse released');
 		onReleased.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
+	}
+	
+	function sortSwipes():Void {
+		for (swipe in FlxG.swipes) {
+			trace('swipe at ${swipe.startPosition.x}, ${swipe.startPosition.y}, duration ${swipe.duration}, angle ${swipe.angle}');
+		}
 	}
 	
 	override public function destroy() {

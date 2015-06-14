@@ -12,7 +12,7 @@ class MapState extends BaseState
 		super.create();
 		FlxG.camera.bgColor = 0xff428C4A;
 		_hud.showTitle('map state');
-		_input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getCurrentIntro()); } );	// TODO flush signals on stateChange
+		Reg.input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getCurrentIntro()); } );	// TODO flush signals on stateChange
 	}
 	
 }

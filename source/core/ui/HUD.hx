@@ -12,12 +12,14 @@ import flixel.util.FlxTimer;
 class HUD extends FlxGroup
 {
 	var _titleText:FlxText;
+	var _pauseText:FlxText;
 	
 	public function new() 
 	{
 		trace('construct');
 		super();
 		initTitle();
+		initPause();
 	}
 	
 	function initTitle() {
@@ -30,16 +32,26 @@ class HUD extends FlxGroup
 		FlxTween.tween(_titleText, { y:FlxG.height - 50 }, 0.7, {complete:hideTitle, type:FlxTween.ONESHOT});
 	}
 	function hideTitle(tween:FlxTween) {
-		trace('hide title');
 		new FlxTimer(1, function(timer) {
-			trace('title hide timer up');
 			FlxTween.tween(_titleText, { y:FlxG.height + 50 }, 0.7, { type:FlxTween.ONESHOT } );
 		});
+	}
+	
+	function initPause() {
+		_pauseText = new FlxText(8, 6 - 50, FlxG.width - 16, 'PAUSED', 32);
+		_pauseText.setFormat(null, 32, 0xffF2FAFF, 'right', FlxText.BORDER_SHADOW, 0xff0C0C0C);
+		add(_pauseText);
+	}
+	public function setPause(value:Bool) {
+		value ?
+			FlxTween.tween(_pauseText, { y: 6 }, 0.2, { type:FlxTween.ONESHOT } ):
+			FlxTween.tween(_pauseText, { y: 6 - 50 }, 0.2, { type:FlxTween.ONESHOT } );
 	}
 	
 	override public function destroy() {
 		trace('destroy');
 		_titleText = null;
+		_pauseText = null;
 		super.destroy();
 	}
 	

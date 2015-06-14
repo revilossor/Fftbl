@@ -1,4 +1,5 @@
 package states.menu;
+import core.Reg;
 import flixel.FlxG;
 import states.BaseState;
 
@@ -14,7 +15,7 @@ class MenuState extends BaseState
 		super.create();
 		FlxG.camera.bgColor = 0xff635231;
 		_hud.showTitle('menu state');
-		_input.onReleased.addOnce(function(at) { fadeToState(MapState); } );
+		Reg.input.onReleased.addOnce(function(at) { fadeToState(MapState); } );
 	}
 	
 }

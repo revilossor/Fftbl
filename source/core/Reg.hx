@@ -1,9 +1,7 @@
 package core;
-import core.nape.PhysicsSimulation;
 import core.world.types.BinTree;
 import core.world.types.Section;
 import core.world.World;
-import nape.space.Space;
 import states.section.boss.BossState;
 import states.section.boss.StadiumGatesBossState;
 import states.section.intro.IntroState;
@@ -17,6 +15,7 @@ import states.section.route.StadiumExitState;
  */
 class Reg
 {
+	public static var input:InputDelegate;
 	public static var world:World;
 	public static var sections:Array<Section> = [		// TODO parse this from loaded xml? and xml Tiled levels with string entity names to parse and instantiate at positions
 		{intro:StadiumState,	route:StadiumExitState,		boss:StadiumGatesBossState,		index:0},
@@ -25,6 +24,7 @@ class Reg
 	];
 	public static var sectionTree:BinTree<Section>;		// TODO make progress object that can be serealised for game history in local storage
 	public static var sectionStage:SectionStage;
+	public static var isPaused:Bool = false;
 }
 enum SectionStage {	// TODO move to section
 	Intro;

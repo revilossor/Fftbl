@@ -7,6 +7,8 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import states.InitState;
 
+
+
 class Main extends Sprite 
 {
 	var gameWidth:Int = 600;

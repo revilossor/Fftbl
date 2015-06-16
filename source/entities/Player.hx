@@ -1,9 +1,6 @@
 package entities;
 import core.entity.PhysicsEntity;
-import core.Reg;
-import core.Reg;
-import flixel.FlxG;
-import nape.geom.Vec2;
+import flixel.util.FlxPoint;
 import nape.phys.Material;
 
 /**
@@ -23,33 +20,13 @@ class Player extends PhysicsEntity
 		animation.add(DOWN, [1]);
 		animation.play(UP);
 		makeBoxBody(Material.rubber());
-		connectToInput();
 	}
 	
-	function connectToInput() {
-		Reg.input.onPressed.add(function(at) {
-			if (overlapsPoint(at)) {
-				animation.play(DOWN);
-			}
-		});
-		Reg.input.onReleased.add(function(at) {
-			animation.play(UP);
-		});
+	override function onPressedOn(at:FlxPoint) {
+		animation.play(DOWN);
 	}
-	
-/*	override public function update() {
-		super.update();
-		if (FlxG.keys.anyJustPressed(['UP'])) {
-			body.applyImpulse(Vec2.get(-50 + (Math.random()*100), -1000, true));		// TODO timestep
-		}
-		if (FlxG.keys.anyJustPressed(['DOWN'])) {
-			body.applyImpulse(Vec2.get(-50 + (Math.random()*100), 1000, true));		// TODO timestep
-		}
-		if (FlxG.keys.anyJustPressed(['LEFT'])) {
-			body.applyImpulse(Vec2.get(-1000, -50 + (Math.random()*100),  true));		// TODO timestep
-		}
-		if (FlxG.keys.anyJustPressed(['RIGHT'])) {
-			body.applyImpulse(Vec2.get(1000, -50 + (Math.random()*100), true));		// TODO timestep
-		}
-	}*/
+	override function onReleased(at:FlxPoint) {
+		super.onReleased(at);
+		animation.play(UP);
+	}
 }

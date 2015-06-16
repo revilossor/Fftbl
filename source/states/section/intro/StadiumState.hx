@@ -1,4 +1,5 @@
 package states.section.intro;
+import core.Reg;
 import core.util.TypedPool;
 import entities.Ball;
 import entities.Player;
@@ -14,6 +15,7 @@ class StadiumState extends IntroState
 	
 	override public function create() {
 		super.create();
+		Reg.input.enabled = true;
 		_hud.showTitle('stadium intro state');	// TODO this overriding tween in parent makes me nervous
 		add(_balls.spawn(Ball, 100, 100));
 		add(_player = new Player(300, 700));

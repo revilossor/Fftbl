@@ -1,6 +1,6 @@
 package states.section;
 import core.Reg;
-import flixel.FlxG;
+import entities.player.Player;
 import states.PhysicsState;
 
 /**
@@ -10,14 +10,42 @@ import states.PhysicsState;
  * TODO exit to deathstate
  */
 class SectionState extends PhysicsState
-{		
+{	
+	var _player:Player;
+	
 	override public function create() {
 		super.create();
-		Reg.input.onHeld.add(function(at) { setPaused(true); } );
-		Reg.input.onReleased.add(function(at) { setPaused(false); } );		// BUG tween out behaves a bit odd here... on held firing multiple timas????
-	}
+		Reg.input.onTap.add(onTap);
+		Reg.input.onSwipe.add(onSwipe);
+		Reg.input.onHeld.add(onHeld);
+		Reg.input.onHeldTick.add(onHeldTick);
+		Reg.input.onReleased.add(onReleased);
+		add(_player = new Player(300, 700));
+	}	
 	
 	function setPaused(value:Bool) {
 		_hud.setPause(Reg.isPaused = value);
+	}
+	function onTap(at):Void {
+		trace('on tap');
+	}
+	function onSwipe(at, direcion) {
+		trace('on swipe'); 
+	}
+	function onHeld(at):Void {
+		setPaused(true);
+	}
+	function onHeldTick(at, index) {
+		trace('on held tick');
+		_hud.addPlayerWaypoint(at);
+		// TODO draw spline
+	}
+	function onReleased(at):Void {
+		setPaused(false);
+		_hud.clearPlayerWaypoints();
+	}
+	override public function destroy() {
+		_player.destroy(); _player = null;
+		super.destroy();
 	}
 }

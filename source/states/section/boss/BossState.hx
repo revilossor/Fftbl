@@ -17,7 +17,7 @@ class BossState extends SectionState
 		super.create();
 		FlxG.camera.bgColor = 0xffCF7222;
 		_hud.showTitle('base boss state');
-		Reg.input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getNext(BossResolution.Left)); } );	// TODO left or right...
+		Reg.input.onTap.addOnce(function(at) { fadeToState(Reg.world.getNext(BossResolution.Left)); } );	// TODO left or right...
 	}
 	
 }

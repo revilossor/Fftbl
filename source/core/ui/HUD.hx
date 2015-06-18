@@ -1,8 +1,11 @@
 package core.ui;
+import core.ui.player.PlayerHudWaypoint;
+import core.util.TypedPool;
 import flixel.FlxG;
 import flixel.group.FlxGroup;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxPoint;
 import flixel.util.FlxTimer;
 
 /**
@@ -13,6 +16,7 @@ class HUD extends FlxGroup
 {
 	var _titleText:FlxText;
 	var _pauseText:FlxText;
+	var _playerWaypoints:TypedPool<PlayerHudWaypoint> = new TypedPool<PlayerHudWaypoint>();
 	
 	public function new() 
 	{
@@ -20,6 +24,7 @@ class HUD extends FlxGroup
 		super();
 		initTitle();
 		initPause();
+		add(_playerWaypoints);
 	}
 	
 	function initTitle() {
@@ -46,6 +51,13 @@ class HUD extends FlxGroup
 		value ?
 			FlxTween.tween(_pauseText, { y: 6 }, 0.2, { type:FlxTween.ONESHOT } ):
 			FlxTween.tween(_pauseText, { y: 6 - 50 }, 0.2, { type:FlxTween.ONESHOT } );
+	}
+	
+	public function addPlayerWaypoint(at:FlxPoint) {
+		_playerWaypoints.spawn(PlayerHudWaypoint, at.x, at.y);
+	}
+	public function clearPlayerWaypoints() {
+		_playerWaypoints.callAll('kill');
 	}
 	
 	override public function destroy() {

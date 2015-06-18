@@ -1,7 +1,7 @@
 package core;
+import core.util.FlxPointFunc;
 import flixel.FlxBasic;
 import flixel.FlxG;
-import flixel.input.FlxSwipe;
 import flixel.util.FlxPoint;
 import flixel.util.FlxSignal.FlxTypedSignal;
 import nape.geom.Vec2;
@@ -10,77 +10,89 @@ import nape.geom.Vec2;
  * ...
  * @author Oliver Ross
  * 
- * 	TODO hold position data - goto drag state, start recording position nodes for bezier run, aim direction for kick
+ * 	TODO - more time to swipe, less time between ticks
  * 
  */
 class InputDelegate extends FlxBasic
 {	
+	public var onHeld:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
+	public var onHeldTick:FlxTypedSignal<FlxPoint->UInt->Void> = new FlxTypedSignal<FlxPoint->UInt->Void>();
+	
+	public var onTap:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
+	public var onSwipe:FlxTypedSignal<FlxPoint->InteractionDirection->Void> = new FlxTypedSignal<FlxPoint->InteractionDirection->Void>();
+	
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
-	public var onHeld:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();			// returns array of points    
-	public var onSwipeUp:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
-	public var onSwipeDown:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
-	public var onSwipeLeft:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
-	public var onSwipeRight:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	
-	var _swipeNodes:Array<Vec2> = [];
-	var _isPressed:Bool = false;
-	var _holdThreshold:UInt = 10;
+	var _holdThreshold:UInt = 10;	// TODO static config?
 	var _holdTimer:UInt = 0;		// TODO bit hacky, make class?
+	var _holdTicks:UInt = 0;
+	var _directionThreshold:Float = 10;
 	
 	@isVar 
 	public var enabled(never, set):Bool; var _enabled:Bool = false;
-	public function set_enabled(value:Bool):Bool { trace('set enabled ${value}'); return _enabled = value; }
+	public function set_enabled(value:Bool):Bool { return _enabled = value; }
 	
 	override public function update() {
 		super.update();
 		if(_enabled) {
-			if (FlxG.mouse.justPressed) { _onPressed(); }		// TODO touch
-			if (FlxG.mouse.justReleased) { _onReleased(); }
-			if (FlxG.mouse.pressed) { _onHeld(); }
-			//sortSwipes();
-			if (_isPressed) {
-				_holdTimer++;
-				if (_holdTimer >= _holdThreshold) {
-					trace('this is a hold');
-					onHeld.dispatch(FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y));		// TODO unify touch in pointer class
-				}
-			}
+			if (FlxG.mouse.justPressed) { onPress(); }
+			if (FlxG.mouse.justReleased) { onRelease(); }
+			if (FlxG.mouse.pressed) { if (_holdTimer++ >= _holdThreshold) { holdTick(); } }
 		}
 	}
 	
-	function _onPressed() {
-		trace('pressed');
-		_isPressed = true;
-		_swipeNodes.splice(0, _swipeNodes.length);
-		onPressed.dispatch(FlxPoint.get(FlxG.mouse.x, FlxG.mouse.y));		// TODO weak Vec2
+	function onPress() {
+		onPressed.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
 	}
-	function _onHeld() {
-		_swipeNodes.push(Vec2.get(FlxG.mouse.x, FlxG.mouse.y, true));	// TODO touch, samplerate, dispatch if durations > swipe duration
-	}
-	function _onReleased() {
-		_isPressed = false;
-		_holdTimer = 0;
-		trace('mouse released - timer is ${_holdTimer}');
+	function onRelease() {
+		if (_holdTicks == 0) { sortSwipes(); }	
+		_holdTimer = _holdTicks = 0;
 		onReleased.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
-		sortSwipes();	// TODO dispatch onHeld
 	}
-	
-	function sortSwipes():Void {
+	function holdTick() {
+		//trace('_holdTicks : $_holdTicks _holdTimer : $_holdTimer');
+		_holdTicks++ == 0 ? 
+			onHeld.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak())):
+			onHeldTick.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()), _holdTicks);
+		_holdTimer = 0;
+	}
+	function sortSwipes() {
+		if (FlxG.swipes.length > 1) {
+			trace('???');
+		}
+		
+		
 		for (swipe in FlxG.swipes) {
-			trace('swipe at ${swipe.startPosition.x}, ${swipe.startPosition.y}, duration ${swipe.duration}, angle ${swipe.angle}');
-			// TODO if duration < swipe duration threshold
-			// TODO get swipe direction and dispatch appropriate signal
-			
-			
+			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _directionThreshold) ?
+				onTap.dispatch(swipe.startPosition):
+				onSwipe.dispatch(swipe.startPosition, getInteractionDirection(swipe.angle));// TODO magnitude? in typedef?
 		}
 	}
 	
+	function getInteractionDirection(angle):InteractionDirection {
+		var absAngle = Math.abs(angle);
+		trace('get direction, angle $angle absAngle $absAngle');
+		if (absAngle <= 45) 		{ return InteractionDirection.Up; 	}
+		else if (absAngle >= 135)	{ return InteractionDirection.Down; 	}
+		else if (angle > 0)			{ return InteractionDirection.Right; 	}
+		else if (angle < 0)			{ return InteractionDirection.Left; 	}
+		else 						{ return InteractionDirection.None; 	}
+	}
 	override public function destroy() {
-		trace('destroy');
-		onPressed.removeAll();
-		onReleased.removeAll();
-		onPressed = onReleased = null;
+		onSwipe.removeAll(); onSwipe = null;
+		onHeld.removeAll(); onHeld = null;
+		onTap.removeAll(); onTap = null;
+		onPressed.removeAll(); onPressed = null;
+		onReleased.removeAll(); onReleased = null;
+		var _swipeNodes:Array<Vec2> = null;
 		super.destroy();
 	}
+}
+enum InteractionDirection {
+	Up;
+	Down;
+	Left;
+	Right;
+	None;
 }

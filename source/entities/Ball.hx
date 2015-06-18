@@ -22,8 +22,7 @@ class Ball extends PhysicsEntity
 		super.update();
 		body.angularVel *= 0.9;
 	}
-	override function onPressedOn(at:FlxPoint) {}
-	override function onReleasedOn(at:FlxPoint) {
+	override function onTapOn(at:FlxPoint) {
 		body.applyImpulse(Vec2.get(-1 + (Math.random() * 2) * 2000, -1 + (Math.random() * 2) * 2000, true));
 	}
 }

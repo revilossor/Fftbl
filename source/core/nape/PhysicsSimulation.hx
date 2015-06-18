@@ -1,6 +1,5 @@
 package core.nape;
 import core.entity.PhysicsEntity;
-import flixel.FlxBasic;
 import flixel.FlxG;
 import nape.callbacks.CbEvent;
 import nape.callbacks.CbType;
@@ -12,7 +11,6 @@ import nape.phys.Body;
 import nape.phys.BodyType;
 import nape.phys.Material;
 import nape.shape.Polygon;
-import nape.shape.Shape;
 import nape.space.Space;
 import nape.util.Debug;
 import nape.util.ShapeDebug;

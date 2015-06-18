@@ -7,7 +7,7 @@ import flixel.group.FlxTypedGroup;
  * @author Oliver Ross
  */
 @generic
-class TypedPool<T:PoolableEntity> extends FlxTypedGroup<T>		// TODO nape entities - space in sectionState, ui popups, text, yesNo, 
+class TypedPool<T:PoolableEntity> extends FlxTypedGroup<T>		// TODO ui popups, text, yesNo, 
 {
 	public function new() 
 	{

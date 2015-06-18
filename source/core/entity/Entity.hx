@@ -1,6 +1,6 @@
 package core.entity;
+import core.InputDelegate.InteractionDirection;
 import flixel.FlxSprite;
-import flixel.util.FlxPoint;
 
 /**
  * ...
@@ -8,26 +8,39 @@ import flixel.util.FlxPoint;
  */
 class Entity extends FlxSprite
 {
-	public function new(?xp:Float = 0, ?yp:Float = 0, ?graphic:Dynamic) 
+	public function new(?xp:Float = 0, ?yp:Float = 0, ?graphic:Dynamic)
 	{
 		trace('create');
 		super(xp, yp, graphic);
 		Reg.input.onPressed.add(onPressed);
 		Reg.input.onReleased.add(onReleased);
+		Reg.input.onTap.add(onTap);
+		Reg.input.onHeld.add(onHeld);
+		Reg.input.onSwipe.add(onSwipe);
 	}
 	
-	function onPressed(at:FlxPoint) {
+	function onPressed(at) {
 		if (overlapsPoint(at)) { onPressedOn(at); }
 	}
-	function onPressedOn(at:FlxPoint) {}
-	function onReleased(at:FlxPoint) {
+	function onPressedOn(at) { }	
+	function onReleased(at) {
 		if (overlapsPoint(at)) { onReleasedOn(at); }
 	}
-	function onReleasedOn(at:FlxPoint) {}
+	function onReleasedOn(at) { }
+	function onTap(at) {
+		if (overlapsPoint(at)) { onTapOn(at); }
+	}
+	function onTapOn(at) { }
+	function onHeld(at) {
+		if (overlapsPoint(at)) { onHeldOn(at); }
+	}
+	function onHeldOn(at) { }
+	function onSwipe(at, direction:InteractionDirection) {
+		if (overlapsPoint(at)) { onSwipeOn(at, direction); }
+	}
+	function onSwipeOn(at, direction) { }
 	override public function update() {
-		if (!Reg.isPaused) {
-			super.update();
-		}
+		if (!Reg.isPaused) { super.update(); }
 	}
 	// TODO destruction tells xml loaded level model entity with this id has been destroyed
 }

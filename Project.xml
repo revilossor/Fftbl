@@ -23,7 +23,7 @@
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="false" />
 	
 	<!--Mobile-specific-->
-	<window if="mobile" orientation="landscape" fullscreen="true" width="600" height="960" />	<!--BUG is this correcct? check in work-->
+	<window if="mobile" orientation="portrait" fullscreen="true" width="600" height="960" />	<!--BUG is this correcct? check in work-->
 	
 	<!--------------------------------PATHS SETTINGS-------------------------------->
 	

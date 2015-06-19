@@ -33,13 +33,13 @@ class Player extends PhysicsEntity
 		super.onReleased(at);
 		animation.play(UP);
 	}
-	override public function onSwipeOn(at, direction) {
-		switch(direction) {
+	override public function onSwipeOn(swipe:Swipe) {
+		switch(swipe.direction) {
 			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0, -2500, true));
 			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0, 2500, true));
 			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-2500, 0, true));			// TODO figure this out for aspect ratio
 			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get(2500, 0, true));
 			case InteractionDirection.None	:	// TODO spin????
-		}
+		}	/// TODO apply impulse of swipe
 	}
 }

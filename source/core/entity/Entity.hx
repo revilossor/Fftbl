@@ -1,5 +1,6 @@
 package core.entity;
 import core.InputDelegate.InteractionDirection;
+import core.InputDelegate.Swipe;
 import flixel.FlxSprite;
 
 /**
@@ -35,10 +36,10 @@ class Entity extends FlxSprite
 		if (overlapsPoint(at)) { onHeldOn(at); }
 	}
 	function onHeldOn(at) { }
-	function onSwipe(at, direction:InteractionDirection) {
-		if (overlapsPoint(at)) { onSwipeOn(at, direction); }
+	function onSwipe(swipe:Swipe) {
+		if (overlapsPoint(swipe.at)) { onSwipeOn(swipe); }
 	}
-	function onSwipeOn(at, direction) { }
+	function onSwipeOn(swipe:Swipe) { }
 	override public function update() {
 		if (!Reg.isPaused) { super.update(); }
 	}

@@ -2,6 +2,7 @@ package core.world.types;
 
 /**
  * @author Oliver Ross
+ * 
  */
 
 typedef BinTree<T> =

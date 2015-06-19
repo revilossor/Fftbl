@@ -1,4 +1,5 @@
 package states.section;
+import core.InputDelegate.Swipe;
 import core.Reg;
 import entities.player.Player;
 import states.PhysicsState;
@@ -29,7 +30,7 @@ class SectionState extends PhysicsState
 	function onTap(at):Void {
 		trace('on tap');
 	}
-	function onSwipe(at, direcion) {
+	function onSwipe(swipe:Swipe) {
 		trace('on swipe'); 
 	}
 	function onHeld(at):Void {
@@ -37,7 +38,7 @@ class SectionState extends PhysicsState
 	}
 	function onHeldTick(at, index) {
 		trace('on held tick');
-		_hud.addPlayerWaypoint(at);
+		_hud.addPlayerWaypoint(at);		// BUG this should only be when starts on player
 		// TODO draw spline
 	}
 	function onReleased(at):Void {

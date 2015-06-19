@@ -19,7 +19,7 @@ class InputDelegate extends FlxBasic
 	public var onHeldTick:FlxTypedSignal<FlxPoint->UInt->Void> = new FlxTypedSignal<FlxPoint->UInt->Void>();
 	
 	public var onTap:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
-	public var onSwipe:FlxTypedSignal<FlxPoint->InteractionDirection->Void> = new FlxTypedSignal<FlxPoint->InteractionDirection->Void>();
+	public var onSwipe:FlxTypedSignal<Swipe->Void> = new FlxTypedSignal<Swipe->Void>();
 	
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
@@ -58,21 +58,16 @@ class InputDelegate extends FlxBasic
 		_holdTimer = 0;
 	}
 	function sortSwipes() {
-		if (FlxG.swipes.length > 1) {
-			trace('???');
-		}
-		
-		
 		for (swipe in FlxG.swipes) {
 			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _directionThreshold) ?
 				onTap.dispatch(swipe.startPosition):
-				onSwipe.dispatch(swipe.startPosition, getInteractionDirection(swipe.angle));// TODO magnitude? in typedef?
+				onSwipe.dispatch({at:swipe.startPosition, direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition)});
 		}
 	}
 	
 	function getInteractionDirection(angle):InteractionDirection {
 		var absAngle = Math.abs(angle);
-		trace('get direction, angle $angle absAngle $absAngle');
+		//trace('get direction, angle $angle absAngle $absAngle');
 		if (absAngle <= 45) 		{ return InteractionDirection.Up; 	}
 		else if (absAngle >= 135)	{ return InteractionDirection.Down; 	}
 		else if (angle > 0)			{ return InteractionDirection.Right; 	}
@@ -95,4 +90,9 @@ enum InteractionDirection {
 	Left;
 	Right;
 	None;
+}
+typedef Swipe = {
+	at:FlxPoint,
+	direction:InteractionDirection,
+	vector:FlxPoint	
 }

@@ -2,6 +2,7 @@ package entities.player;
 import core.entity.PhysicsEntity;
 import core.InputDelegate;
 import core.Reg;
+import core.util.Vec2Func;
 import flixel.FlxG;
 import flixel.util.FlxColor;
 import flixel.util.FlxPoint;
@@ -46,10 +47,10 @@ class Player extends PhysicsEntity
 	override function onSwipeOn(swipe:Swipe) {
 		Reg.hud.showInfo('swipe on player');
 		switch(swipe.direction) {
-			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0, -(FlxG.height), true));
-			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0, (FlxG.height), true));
-			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-(FlxG.height), 0, true));
-			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get((FlxG.height), 0, true));
+			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0,-(FlxG.height*2), true));
+			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0,(FlxG.height*2), true));
+			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-(FlxG.height*2), 0, true));
+			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get((FlxG.height*2), 0, true));
 			case InteractionDirection.None	:	// TODO spin????
 		}	/// TODO apply vector of swipe?
 	}
@@ -77,32 +78,26 @@ class Player extends PhysicsEntity
 	}
 	function followPath() {
 		//Reg.hud.clearPlayerWaypoints();
-		trace('follow path, there are ${_waypoints.length} waypoints');
 		seekNextWaypoint();
 	}
 	function seekNextWaypoint() {
-		var dest = _waypoints[0];
-		if (dest == null) { return; }
-		var vec = getBetween(body.worldCOM, Vec2.weak(_waypoints[0].x, _waypoints[0].y));
+		//if (_waypoints.length == 0) { trace('no more waypoints!'); return; }
+		var between = Vec2Func.getBetween(body.worldCOM, Vec2.weak(_waypoints[0].x, _waypoints[0].y));
 		// if close, pop and get next
-		var dist = getMagnitudeSq(vec);
-		(dist < (1000)) ?
-			popWaypoint() :
-			body.applyImpulse(Vec2.weak(vec.x*0.1, vec.y*0.1));
+		var distance = Vec2Func.getDistanceBetween(body.worldCOM, Vec2.weak(_waypoints[0].x, _waypoints[0].y));
+		if (distance < 50) {	
+			popWaypoint();
+		} else {
+			var seek = Vec2Func.magnify(between, distance); 
+			move(seek);
+		}
 	}
 	function popWaypoint() {
 		trace('pop waypoint');
+		if (_waypoints.length == 1) { _forward.setxy(0, 0); Reg.hud.clearPlayerWaypoints(); }
 		_waypoints.splice(0, 1);
-	}
-
-	function distanceCheck(a:Vec2, b:Vec2, threshold:Float):Bool {
-		return getMagnitudeSq(getBetween(a, b)) <= (threshold * threshold) ? true : false;
-	}
-	function getBetween(a:Vec2, b:Vec2):Vec2 {
-		return Vec2.weak(b.x - a.x, b.y - a.y);
-	}
-	function getMagnitudeSq(v:Vec2):Float {
-		return Math.pow(v.x, 2) + Math.pow(v.y, 2);
+		// TODO clear waypoints one by one
+		trace('\tlength ${_waypoints.length}');
 	}
 	
 }

@@ -26,20 +26,23 @@ class Player extends PhysicsEntity
 		animation.add(UP, [0]);
 		animation.add(DOWN, [1]);
 		animation.play(UP);
-		makeBoxBody(Material.rubber());
+		makeBoxBody(Material.wood());
 	}
 	
 	override function onPressedOn(at:FlxPoint) {
 		animation.play(DOWN);
-		_isDragging = true;
 	}
 	override function onReleased(at:FlxPoint) {
 		super.onReleased(at);
 		animation.play(UP);
-		_isDragging = false;
-		Reg.hud.clearPlayerWaypoints();	// TODO need a nicer way to do this...
+		if(_isDragging) {// TODO need a nicer way to do this...
+			_isDragging = false;
+			Reg.hud.clearPlayerWaypoints();
+			Reg.hud.showInfo('clear player position nodes');
+		}
 	}
 	override function onSwipeOn(swipe:Swipe) {
+		Reg.hud.showInfo('swipe on player');
 		switch(swipe.direction) {
 			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0, -2500, true));
 			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0, 2500, true));
@@ -48,9 +51,13 @@ class Player extends PhysicsEntity
 			case InteractionDirection.None	:	// TODO spin????
 		}	/// TODO apply vector of swipe?
 	}
+	override public function onHeldOn(at) {
+		Reg.hud.showInfo("held on player");
+		_isDragging = true;
+	}
 	override public function onHeldTick(at:FlxPoint, index:UInt) {
 		super.onHeldTick(at, index);
-		if(_isDragging) { Reg.hud.addPlayerWaypoint(at); }
+		if(_isDragging) { Reg.hud.showInfo('drag player position node'); Reg.hud.addPlayerWaypoint(at); }
 		// TODO draw spline
 	}
 }

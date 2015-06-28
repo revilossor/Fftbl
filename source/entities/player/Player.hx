@@ -41,8 +41,6 @@ class Player extends PhysicsEntity
 		animation.play(UP);
 		if(_isDragging) {// TODO need a nicer way to do this...
 			_isDragging = false;
-			Reg.hud.clearPlayerWaypoints();
-			trace('drag path finished, there are ${_waypoints.length} waypoints');
 		}
 	}
 	override function onSwipeOn(swipe:Swipe) {
@@ -68,4 +66,43 @@ class Player extends PhysicsEntity
 			// TODO draw spline
 		}
 	}
+	
+	override public function update() {
+		super.update();
+		if (!_isDragging) {
+			if (_waypoints.length > 0) {	// not dragging, but waypoints - must have just added them
+				followPath();
+			}
+		}
+	}
+	function followPath() {
+		//Reg.hud.clearPlayerWaypoints();
+		trace('follow path, there are ${_waypoints.length} waypoints');
+		seekNextWaypoint();
+	}
+	function seekNextWaypoint() {
+		var dest = _waypoints[0];
+		if (dest == null) { return; }
+		var vec = getBetween(body.worldCOM, Vec2.weak(_waypoints[0].x, _waypoints[0].y));
+		// if close, pop and get next
+		var dist = getMagnitudeSq(vec);
+		(dist < (1000)) ?
+			popWaypoint() :
+			body.applyImpulse(Vec2.weak(vec.x*0.1, vec.y*0.1));
+	}
+	function popWaypoint() {
+		trace('pop waypoint');
+		_waypoints.splice(0, 1);
+	}
+
+	function distanceCheck(a:Vec2, b:Vec2, threshold:Float):Bool {
+		return getMagnitudeSq(getBetween(a, b)) <= (threshold * threshold) ? true : false;
+	}
+	function getBetween(a:Vec2, b:Vec2):Vec2 {
+		return Vec2.weak(b.x - a.x, b.y - a.y);
+	}
+	function getMagnitudeSq(v:Vec2):Float {
+		return Math.pow(v.x, 2) + Math.pow(v.y, 2);
+	}
+	
 }

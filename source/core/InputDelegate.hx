@@ -24,10 +24,10 @@ class InputDelegate extends FlxBasic
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	
-	var _holdThreshold:UInt = 10;	// TODO static config?
+	var _holdThreshold:UInt = 15;	// TODO static config?
 	var _holdTimer:UInt = 0;		// TODO bit hacky, make class?
 	var _holdTicks:UInt = 0;
-	var _directionThreshold:Float = 10;
+	var _swipeThreshold:Float = 10;
 	
 	@isVar 
 	public var enabled(never, set):Bool; var _enabled:Bool = false;
@@ -59,7 +59,7 @@ class InputDelegate extends FlxBasic
 	}
 	function sortSwipes() {
 		for (swipe in FlxG.swipes) {
-			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _directionThreshold) ?
+			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _swipeThreshold) ?
 				onTap.dispatch(swipe.startPosition):
 				onSwipe.dispatch({at:swipe.startPosition, direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition)});
 		}

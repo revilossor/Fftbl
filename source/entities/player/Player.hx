@@ -3,6 +3,7 @@ import core.entity.PhysicsEntity;
 import core.InputDelegate;
 import core.Reg;
 import flixel.FlxG;
+import flixel.util.FlxColor;
 import flixel.util.FlxPoint;
 import nape.geom.Vec2;
 import nape.phys.Material;
@@ -19,6 +20,7 @@ class Player extends PhysicsEntity
 	public static var DOWN:String = 'down';
 	
 	var _isDragging:Bool = false;	// TODO need to see this elsewhere for state change ui stuff...
+	var _waypoints:Array<FlxPoint> = [];
 	
 	public function new(?xp:Float = 0, ?yp:Float = 0) 
 	{
@@ -32,6 +34,7 @@ class Player extends PhysicsEntity
 	
 	override function onPressedOn(at:FlxPoint) {
 		animation.play(DOWN);
+		_isDragging = true;	// TODO ideally this would only flip when not a swipe...
 	}
 	override function onReleased(at:FlxPoint) {
 		super.onReleased(at);
@@ -39,7 +42,7 @@ class Player extends PhysicsEntity
 		if(_isDragging) {// TODO need a nicer way to do this...
 			_isDragging = false;
 			Reg.hud.clearPlayerWaypoints();
-			Reg.hud.showInfo('clear player position nodes');
+			trace('drag path finished, there are ${_waypoints.length} waypoints');
 		}
 	}
 	override function onSwipeOn(swipe:Swipe) {
@@ -47,18 +50,22 @@ class Player extends PhysicsEntity
 		switch(swipe.direction) {
 			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0, -(FlxG.height), true));
 			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0, (FlxG.height), true));
-			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-(FlxG.height), 0, true));			// TODO figure this out for aspect ratio
+			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-(FlxG.height), 0, true));
 			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get((FlxG.height), 0, true));
 			case InteractionDirection.None	:	// TODO spin????
 		}	/// TODO apply vector of swipe?
 	}
 	override public function onHeldOn(at) {
 		Reg.hud.showInfo("held on player");
-		_isDragging = true;
 	}
 	override public function onHeldTick(at:FlxPoint, index:UInt) {
 		super.onHeldTick(at, index);
-		if(_isDragging) { Reg.hud.showInfo('drag player position node'); Reg.hud.addPlayerWaypoint(at); }
-		// TODO draw spline
+		if (_isDragging) { 
+			Reg.hud.showInfo('drag player position node'); 
+			Reg.hud.addPlayerWaypoint(at);
+			_waypoints.push(at);
+			FlxG.camera.flash(FlxColor.WHITE, 0.1);
+			// TODO draw spline
+		}
 	}
 }

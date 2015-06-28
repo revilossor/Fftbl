@@ -25,7 +25,7 @@ class SectionState extends PhysicsState
 	}	
 	
 	function setPaused(value:Bool) {
-		_hud.setPause(Reg.isPaused = value);
+		Reg.hud.setPause(Reg.isPaused = value);
 	}
 	function onTap(at):Void {
 		trace('on tap');
@@ -33,17 +33,14 @@ class SectionState extends PhysicsState
 	function onSwipe(swipe:Swipe) {
 		trace('on swipe'); 
 	}
-	function onHeld(at):Void {
+	function onHeld(at):Void {		// TODO drag to shoot if have ball, run if dont
 		setPaused(true);
 	}
-	function onHeldTick(at, index) {
+	function onHeldTick(at, index) {	// TODO drag to change aim if ball, draw path if dont
 		trace('on held tick');
-		_hud.addPlayerWaypoint(at);		// BUG this should only be when starts on player
-		// TODO draw spline
 	}
 	function onReleased(at):Void {
 		setPaused(false);
-		_hud.clearPlayerWaypoints();
 	}
 	override public function destroy() {
 		_player.destroy(); _player = null;

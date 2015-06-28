@@ -1,4 +1,5 @@
 package states.section.boss;
+import core.Reg;
 import flixel.FlxG;
 
 /**
@@ -9,7 +10,7 @@ class StadiumGatesBossState extends BossState
 {
 	override public function create() {
 		super.create();
-		_hud.showTitle('locked gates boss state');
+		Reg.hud.showTitle('locked gates boss state');
 	}
 	
 }

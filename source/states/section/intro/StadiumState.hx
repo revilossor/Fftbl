@@ -14,7 +14,7 @@ class StadiumState extends IntroState
 	override public function create() {
 		super.create();
 		Reg.input.enabled = true;
-		_hud.showTitle('stadium intro state');	// TODO this overriding tween in parent makes me nervous
+		Reg.hud.showTitle('stadium intro state');	// TODO this overriding tween in parent makes me nervous
 		add(_balls.spawn(Ball, 100, 100));
 	}
 	

@@ -1,9 +1,7 @@
 package states;
-import core.InputDelegate;
 import core.Reg;
 import core.world.World;
 import flixel.FlxG;
-import states.menu.MenuState;
 
 /**
  * ...
@@ -14,7 +12,7 @@ class InitState extends BaseState		// TODO some of the init stuff in here might 
 	override public function create() {
 		super.create();
 		FlxG.camera.bgColor = 0xffff00ff;
-		_hud.showTitle('init state');
+		Reg.hud.showTitle('init state');
 		Reg.world = new World();
 		Reg.sectionStage = SectionStage.Intro;
 		//_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );

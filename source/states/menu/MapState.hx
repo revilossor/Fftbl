@@ -11,7 +11,7 @@ class MapState extends BaseState
 	override public function create() {
 		super.create();
 		FlxG.camera.bgColor = 0xff428C4A;
-		_hud.showTitle('map state');
+		Reg.hud.showTitle('map state');
 		Reg.input.onTap.addOnce(function(at) { fadeToState(Reg.world.getCurrentIntro()); } );	// TODO flush signals on stateChange
 	}
 	

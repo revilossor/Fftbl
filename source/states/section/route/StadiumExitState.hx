@@ -1,4 +1,5 @@
 package states.section.route;
+import core.Reg;
 import flixel.FlxG;
 
 /**
@@ -9,6 +10,6 @@ class StadiumExitState extends RouteState
 {
 	override public function create() {
 		super.create();
-		_hud.showTitle('stadium exit state');
+		Reg.hud.showTitle('stadium exit state');
 	}
 }

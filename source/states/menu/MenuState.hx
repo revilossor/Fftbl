@@ -14,7 +14,7 @@ class MenuState extends BaseState
 	{
 		super.create();
 		FlxG.camera.bgColor = 0xff635231;
-		_hud.showTitle('menu state');
+		Reg.hud.showTitle('menu state');
 		Reg.input.onTap.addOnce(function(at) { fadeToState(MapState); } );
 	}
 	

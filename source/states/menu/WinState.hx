@@ -14,7 +14,7 @@ class WinState extends BaseState
 	{
 		super.create();
 		FlxG.camera.bgColor = 0xff4A73D6;
-		_hud.showTitle('win state');
+		Reg.hud.showTitle('win state');
 		Reg.input.onTap.addOnce(function(at) { fadeToState(MenuState); } );
 	}		
 }

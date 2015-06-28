@@ -14,13 +14,11 @@ import flixel.util.FlxColor;
  */
 class BaseState extends FlxState
 {
-	var _hud:HUD;
-	
 	override public function create() {
 		trace('construct');
 		super.create();
 		add(Reg.input = new InputDelegate());
-		add(_hud = new HUD());
+		add(Reg.hud = new HUD());
 		FlxG.camera.fade(FlxColor.BLACK, 1, true, function() { Reg.input.enabled = true; } );
 	}
 	

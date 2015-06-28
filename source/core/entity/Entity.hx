@@ -17,6 +17,7 @@ class Entity extends FlxSprite
 		Reg.input.onReleased.add(onReleased);
 		Reg.input.onTap.add(onTap);
 		Reg.input.onHeld.add(onHeld);
+		Reg.input.onHeldTick.add(onHeldTick);
 		Reg.input.onSwipe.add(onSwipe);
 	}
 	
@@ -36,6 +37,10 @@ class Entity extends FlxSprite
 		if (overlapsPoint(at)) { onHeldOn(at); }
 	}
 	function onHeldOn(at) { }
+	function onHeldTick(at, index) {
+		if (overlapsPoint(at)) { onHeldTickOn(at, index); }
+	}
+	function onHeldTickOn(at, index) { }
 	function onSwipe(swipe:Swipe) {
 		if (overlapsPoint(swipe.at)) { onSwipeOn(swipe); }
 	}

@@ -5,22 +5,22 @@ import flixel.util.FlxPoint;
  * ...
  * @author Oliver Ross TODO - static extention of flxpoint?
  */
-class FlxPointFunc		// TODO - memory leaks here???? also do a vec2 version. or typedef version.....
+class FlxPointFunc
 {
 	public static function add(a:FlxPoint, b:FlxPoint):FlxPoint {
-		return FlxPoint.get(a.x + b.x, a.y + b.y);
+		return FlxPoint.weak(a.x + b.x, a.y + b.y);
 	}
 	public static function sub(a:FlxPoint, b:FlxPoint):FlxPoint {
-		return FlxPoint.get(a.x - b.x, a.y - b.y);
+		return FlxPoint.weak(a.x - b.x, a.y - b.y);
 	}
 	public static function div(a:FlxPoint, b:FlxPoint):FlxPoint {
-		return FlxPoint.get(a.x / b.x, a.y / b.y);
+		return FlxPoint.weak(a.x / b.x, a.y / b.y);
 	}
 	public static function mul(a:FlxPoint, b:FlxPoint):FlxPoint {
-		return FlxPoint.get(a.x * b.x, a.y * b.y);
+		return FlxPoint.weak(a.x * b.x, a.y * b.y);
 	}
 	public static function getBetween(a:FlxPoint, b:FlxPoint):FlxPoint {
-		return FlxPoint.get(b.x - a.x, b.y - a.y);
+		return FlxPoint.weak(b.x - a.x, b.y - a.y);
 	}
 	public static function getUnitBetween(a:FlxPoint, b:FlxPoint):FlxPoint {
 		return normalise(getBetween(a, b));
@@ -39,18 +39,18 @@ class FlxPointFunc		// TODO - memory leaks here???? also do a vec2 version. or t
 	}
 	public static function normalise(v:FlxPoint):FlxPoint {
 		var mag:Float = getMagnitude(v);
-		return FlxPoint.get(v.x / mag, v.y / mag);
+		return FlxPoint.weak(v.x / mag, v.y / mag);
 	}
 	public static function magnify(v:FlxPoint, m:Float):FlxPoint {
-		return FlxPoint.get(v.x * m, v.y * m);
+		return FlxPoint.weak(v.x * m, v.y * m);
 	}
 	public static function setMagnitude(v:FlxPoint, m:Float):FlxPoint {
 		return magnify(normalise(v), m);
 	}
 	public static function getNormals(a:FlxPoint):Array<FlxPoint> {
 		var ret:Array<FlxPoint> = new Array<FlxPoint>();
-		ret.push(FlxPoint.get( -a.y, a.x));
-		ret.push(FlxPoint.get(a.y, -a.x));
+		ret.push(FlxPoint.weak( -a.y, a.x));
+		ret.push(FlxPoint.weak(a.y, -a.x));
 		return ret;
 	}
 	public static function dot(a:FlxPoint, b:FlxPoint):Float {

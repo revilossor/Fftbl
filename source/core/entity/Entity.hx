@@ -1,5 +1,4 @@
 package core.entity;
-import core.InputDelegate.InteractionDirection;
 import core.InputDelegate.Swipe;
 import flixel.FlxSprite;
 

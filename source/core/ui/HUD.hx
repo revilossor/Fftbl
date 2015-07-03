@@ -40,6 +40,7 @@ class HUD extends FlxGroup
 	
 	override public function destroy() {
 		trace('destroy');
+		_playerWaypoints.callAll('destroy');
 		_titleText = null;
 		_pauseText = null;
 		_infoText = null;

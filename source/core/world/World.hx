@@ -1,11 +1,10 @@
 package core.world;
-import core.Reg.BossResolution;
-import core.Reg.SectionStage;
-import core.world.types.BinTree;
-import core.world.types.Section;
+import core.util.BinTree;
+import core.world.Section;
 import flixel.FlxBasic;
 import flixel.FlxState;
 import states.menu.WinState;
+import states.section.boss.BossState;
 
 /**
  * ...
@@ -74,4 +73,9 @@ class World extends FlxBasic
 		 _map = null;
 		super.destroy();
 	}
+}
+enum SectionStage {
+	Intro;
+	Route;
+	Boss;
 }

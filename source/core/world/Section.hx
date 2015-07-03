@@ -1,4 +1,4 @@
-package core.world.types;
+package core.world;
 import flixel.FlxState;
 
 /**

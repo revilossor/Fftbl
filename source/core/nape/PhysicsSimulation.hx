@@ -52,7 +52,7 @@ class PhysicsSimulation
 	
 	function addFloor(xp:Float, yp:Float, width:Float, height:Float):Body {	// TODO dont track floor in var, just add by w, h, material, fluidProps so can have different areas
 		var floor = new Body(BodyType.STATIC);
-		var shape = new Polygon(Polygon.rect(0, 0, width, height), Material.wood(), _floorInteractionFilter);	// TODO materials for floor types
+		var shape = new Polygon(Polygon.rect(0, 0, width, height), Material.sand(), _floorInteractionFilter);	// TODO materials for floor types
 		//shape.sensorEnabled = false;	// TODO spawn particles sensor on floor?
 		floor.debugDraw = false;
 		shape.fluidEnabled = true;
@@ -97,4 +97,13 @@ class PhysicsSimulation
 		entity.body.space = _space;
 	}
 	// TODO destroy / remove bodies...
+	public function destroy() {
+		trace('destroy');
+		_space = null;
+		_floorInteractionFilter = null;
+		_wallCollisionListener = null;
+		_wallCollisionType = null;
+		_entityCollisionType = null;
+		debug = null;
+	}
 }

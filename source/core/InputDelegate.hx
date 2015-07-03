@@ -10,29 +10,31 @@ import nape.geom.Vec2;
  * ...
  * @author Oliver Ross
  * 
- * 	TODO - more time to swipe, less time between ticks
  * 
  */
 class InputDelegate extends FlxBasic
 {	
 	public var onHeld:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onHeldTick:FlxTypedSignal<FlxPoint->UInt->Void> = new FlxTypedSignal<FlxPoint->UInt->Void>();
-	
 	public var onTap:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onSwipe:FlxTypedSignal<Swipe->Void> = new FlxTypedSignal<Swipe->Void>();
-	
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	
-	var _holdThreshold:UInt = 10;	// TODO static config?
-	var _holdTimer:UInt = 0;		// TODO bit hacky, make class?
+	var _holdThreshold:UInt = 15;
+	var _holdTimer:UInt = 0;
 	var _holdTicks:UInt = 0;
-	var _directionThreshold:Float = 10;
+	var _swipeThreshold:Float = 10;
 	
 	@isVar 
 	public var enabled(never, set):Bool; var _enabled:Bool = false;
 	public function set_enabled(value:Bool):Bool { return _enabled = value; }
 	
+	public function new() {
+		super();
+		//FlxG.signals.stateSwitched.add(flush);
+	}
+	// TODO debug keys
 	override public function update() {
 		super.update();
 		if(_enabled) {
@@ -51,7 +53,6 @@ class InputDelegate extends FlxBasic
 		onReleased.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
 	}
 	function holdTick() {
-		//trace('_holdTicks : $_holdTicks _holdTimer : $_holdTimer');
 		_holdTicks++ == 0 ? 
 			onHeld.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak())):
 			onHeldTick.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()), _holdTicks);
@@ -59,29 +60,29 @@ class InputDelegate extends FlxBasic
 	}
 	function sortSwipes() {
 		for (swipe in FlxG.swipes) {
-			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _directionThreshold) ?
+			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _swipeThreshold) ?
 				onTap.dispatch(swipe.startPosition):
 				onSwipe.dispatch({at:swipe.startPosition, direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition)});
 		}
 	}
-	
 	function getInteractionDirection(angle):InteractionDirection {
 		var absAngle = Math.abs(angle);
-		//trace('get direction, angle $angle absAngle $absAngle');
-		if (absAngle <= 45) 		{ return InteractionDirection.Up; 	}
+		if (absAngle <= 45) 		{ return InteractionDirection.Up; 		}
 		else if (absAngle >= 135)	{ return InteractionDirection.Down; 	}
 		else if (angle > 0)			{ return InteractionDirection.Right; 	}
 		else if (angle < 0)			{ return InteractionDirection.Left; 	}
 		else 						{ return InteractionDirection.None; 	}
 	}
+	
 	override public function destroy() {
-		onSwipe.removeAll(); onSwipe = null;
-		onHeld.removeAll(); onHeld = null;
-		onTap.removeAll(); onTap = null;
-		onPressed.removeAll(); onPressed = null;
-		onReleased.removeAll(); onReleased = null;
-		var _swipeNodes:Array<Vec2> = null;
+		flush();
+		onSwipe = null;			onHeld = null;			onHeldTick = null;
+		onTap = null;			onPressed = null;		onReleased = null;
 		super.destroy();
+	}
+	function flush() {
+		onSwipe.removeAll();	onHeld.removeAll();		onHeldTick.removeAll();
+		onTap.removeAll();		onPressed.removeAll();	onReleased.removeAll();
 	}
 }
 enum InteractionDirection {

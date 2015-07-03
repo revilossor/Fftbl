@@ -1,6 +1,5 @@
 package states;
 import core.nape.PhysicsSimulation;
-import core.util.TypedPool;
 import flixel.FlxG;
 
 /**
@@ -18,7 +17,7 @@ class PhysicsState extends BaseState
 	
 	function initPhysics() {
 		trace('init new physics simulation');
-	 	_physics = new PhysicsSimulation(0, 0, FlxG.width, FlxG.height);		// TODO ???? nape scale is different to flixel pixels....
+	 	_physics = new PhysicsSimulation(0, 0, FlxG.width, FlxG.height);
 	}
 	override public function add(entity){// TODO remove also removes from physics
 		super.add(entity);
@@ -32,6 +31,7 @@ class PhysicsState extends BaseState
 	}
 	
 	override public function destroy() {
+		_physics.destroy();
 		_physics = null;
 		super.destroy();
 	}

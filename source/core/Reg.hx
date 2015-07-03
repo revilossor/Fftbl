@@ -1,7 +1,7 @@
 package core;
 import core.ui.HUD;
-import core.world.types.BinTree;
-import core.world.types.Section;
+import core.util.BinTree;
+import core.world.Section;
 import core.world.World;
 import states.section.boss.BossState;
 import states.section.boss.StadiumGatesBossState;
@@ -29,13 +29,4 @@ class Reg
 	public static var sectionStage:SectionStage;
 
 	public static var isPaused:Bool = false;
-}
-enum SectionStage {	// TODO move to section
-	Intro;
-	Route;
-	Boss;
-}
-enum BossResolution {	// TODO move to BossState
-	Left;
-	Right;
 }

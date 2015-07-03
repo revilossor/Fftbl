@@ -12,8 +12,6 @@ class IntroState extends SectionState
 		super.create();
 		FlxG.camera.bgColor = 0xff21C629;
 		Reg.hud.showTitle('base intro state');
-		
-		//_input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getNext()); } );	// TODO flush signals on stateChange
 	}
 	
 }

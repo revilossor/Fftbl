@@ -13,6 +13,7 @@ class InitState extends BaseState		// TODO some of the init stuff in here might 
 		super.create();
 		FlxG.camera.bgColor = 0xffff00ff;
 		Reg.hud.showTitle('init state');
+		// TODO load config / world models here
 		Reg.world = new World();
 		Reg.sectionStage = SectionStage.Intro;
 		//_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );

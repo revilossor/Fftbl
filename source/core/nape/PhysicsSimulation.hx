@@ -97,4 +97,13 @@ class PhysicsSimulation
 		entity.body.space = _space;
 	}
 	// TODO destroy / remove bodies...
+	public function destroy() {
+		trace('destroy');
+		_space = null;
+		_floorInteractionFilter = null;
+		_wallCollisionListener = null;
+		_wallCollisionType = null;
+		_entityCollisionType = null;
+		debug = null;
+	}
 }

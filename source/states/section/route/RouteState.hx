@@ -17,7 +17,7 @@ class RouteState extends SectionState
 		FlxG.camera.bgColor = 0xffE7AD00;
 		Reg.hud.showTitle('base route state');
 		
-		Reg.input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getNext()); } );	// TODO flush signals on stateChange
+		Reg.input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getNext()); } );
 	}
 	
 }

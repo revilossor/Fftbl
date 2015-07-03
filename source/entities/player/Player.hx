@@ -13,7 +13,6 @@ import nape.phys.Material;
  * ...
  * @author Oliver Ross
  * 
- * TODO bezier path or seek nodes?
  */
 class Player extends PhysicsEntity
 {
@@ -47,56 +46,50 @@ class Player extends PhysicsEntity
 	override function onSwipeOn(swipe:Swipe) {
 		Reg.hud.showInfo('swipe on player');
 		switch(swipe.direction) {
-			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0,-(FlxG.height), true));
-			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0,(FlxG.height), true));
-			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-(FlxG.height), 0, true));
-			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get((FlxG.height), 0, true));		// TODO elapsed...
-			case InteractionDirection.None	:	// TODO spin????
-		}	/// TODO apply vector of swipe?
+			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0,-((FlxG.height * 50) * FlxG.elapsed), true));
+			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0,((FlxG.height * 50) * FlxG.elapsed), true));
+			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-((FlxG.width * 50) * FlxG.elapsed), 0, true));
+			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get(((FlxG.width * 50) * FlxG.elapsed), 0, true));
+			case InteractionDirection.None	:
+		}
 	}
 	override public function onHeldOn(at) {
 		Reg.hud.showInfo("held on player");
 	}
-	override public function onHeldTick(at:FlxPoint, index:UInt) {
+	override public function onHeldTick(at:FlxPoint, index:UInt) {		// TODO memory leak when dragging player waypoints? is it just cos instantiating stuff?
 		super.onHeldTick(at, index);
 		if (_isDragging) { 
 			Reg.hud.showInfo('drag player position node'); 
 			Reg.hud.addPlayerWaypoint(at);
 			_waypoints.push(at);
 			FlxG.camera.flash(FlxColor.WHITE, 0.1);
-			// TODO draw spline
+			// TODO draw spline in hud
 		}
 	}
 	
 	override public function update() {
 		super.update();
 		if (!_isDragging) {
-			if (_waypoints.length > 0) {	// not dragging, but waypoints - must have just added them
+			if (_waypoints.length > 0) {
 				followPath();
 			}
 		}
 	}
 	function followPath() {
-		//Reg.hud.clearPlayerWaypoints();
 		seekNextWaypoint();
 	}
 	function seekNextWaypoint() {
-		//if (_waypoints.length == 0) { trace('no more waypoints!'); return; }
 		var between = Vec2Func.getBetween(body.worldCOM, Vec2.weak(_waypoints[0].x, _waypoints[0].y));
-		// if close, pop and get next
 		var distance = Vec2Func.getDistanceBetween(body.worldCOM, Vec2.weak(_waypoints[0].x, _waypoints[0].y));
-		if (distance < 50) {	
-			popWaypoint();
-		} else {
-			var seek = Vec2Func.magnify(between, distance); 
-			move(seek);
-		}
+		distance < 50 ?
+			popWaypoint() :
+			move(Vec2Func.magnify(between, distance));
 	}
 	function popWaypoint() {
 		trace('pop waypoint');
 		if (_waypoints.length == 1) { _forward.setxy(0, 0); Reg.hud.clearPlayerWaypoints(); }
 		_waypoints.splice(0, 1);
-		// TODO clear waypoints one by one
+		// TODO clear waypoints / spline in hud one by one
 		trace('\tlength ${_waypoints.length}');
 	}
 	

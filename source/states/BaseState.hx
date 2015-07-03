@@ -10,7 +10,6 @@ import flixel.util.FlxColor;
  * ...
  * @author Oliver Ross
  * 
- * TODO overridale functions for holdPlayer, swipePlayer[up, down, left, right], pathPlayer, holdSection, swipeSection[up, down, left, right], pathSection
  */
 class BaseState extends FlxState
 {

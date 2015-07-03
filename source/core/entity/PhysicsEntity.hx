@@ -2,10 +2,8 @@ package core.entity;
 import flixel.FlxG;
 import nape.geom.Vec2;
 import nape.phys.Body;
-import nape.phys.BodyType;
 import nape.phys.Material;
 import nape.shape.Polygon;
-import nape.shape.Shape;
 
 /**
  * ...
@@ -15,8 +13,7 @@ class PhysicsEntity extends PoolableEntity
 {
 	public var body:Body = new Body();
 	
-	// TODO set on construct?
-	var _bodyMaxSpeed:Float = 1000;
+	var _bodyMaxSpeed:Float;
 	var _forward:Vec2 = Vec2.get();
 	
 	public function new(?xp:Float = 0, ?yp:Float = 0, ?speed:Float = 1000) {

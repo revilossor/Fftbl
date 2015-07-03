@@ -19,8 +19,9 @@ class PhysicsEntity extends PoolableEntity
 	var _bodyMaxSpeed:Float = 1000;
 	var _forward:Vec2 = Vec2.get();
 	
-	public function new(?xp:Float = 0, ?yp:Float = 0) {
+	public function new(?xp:Float = 0, ?yp:Float = 0, ?speed:Float = 1000) {
 		super(xp, yp);
+		_bodyMaxSpeed = speed;
 	}
 	
 	//TODO movement method, collision handling

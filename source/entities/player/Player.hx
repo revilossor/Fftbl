@@ -25,7 +25,7 @@ class Player extends PhysicsEntity
 	
 	public function new(?xp:Float = 0, ?yp:Float = 0) 
 	{
-		super(xp, yp);
+		super(xp, yp, 1500);
 		loadGraphic('assets/images/player.png', true, 100, 70);
 		animation.add(UP, [0]);
 		animation.add(DOWN, [1]);
@@ -47,10 +47,10 @@ class Player extends PhysicsEntity
 	override function onSwipeOn(swipe:Swipe) {
 		Reg.hud.showInfo('swipe on player');
 		switch(swipe.direction) {
-			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0,-(FlxG.height*2), true));
-			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0,(FlxG.height*2), true));
-			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-(FlxG.height*2), 0, true));
-			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get((FlxG.height*2), 0, true));
+			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0,-(FlxG.height), true));
+			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0,(FlxG.height), true));
+			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-(FlxG.height), 0, true));
+			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get((FlxG.height), 0, true));		// TODO elapsed...
 			case InteractionDirection.None	:	// TODO spin????
 		}	/// TODO apply vector of swipe?
 	}

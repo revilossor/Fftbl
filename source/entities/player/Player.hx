@@ -1,7 +1,7 @@
 package entities.player;
 import core.entity.PhysicsEntity;
 import core.InputDelegate;
-import core.Reg;
+import Reg;
 import core.util.Vec2Func;
 import flixel.FlxG;
 import flixel.util.FlxColor;

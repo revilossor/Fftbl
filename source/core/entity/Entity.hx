@@ -1,6 +1,7 @@
 package core.entity;
 import core.InputDelegate.Swipe;
 import flixel.FlxSprite;
+import Reg;
 
 /**
  * ...

@@ -1,5 +1,6 @@
 package states;
-import core.Reg;
+import core.model.ModelLoader;
+import Reg;
 import core.world.World;
 import flixel.FlxG;
 
@@ -14,6 +15,10 @@ class InitState extends BaseState		// TODO some of the init stuff in here might 
 		FlxG.camera.bgColor = 0xffff00ff;
 		Reg.hud.showTitle('init state');
 		// TODO load config / world models here
+		var loader = new ModelLoader();
+		//loader.get(
+		
+		
 		Reg.world = new World();
 		Reg.sectionStage = SectionStage.Intro;
 		//_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );

@@ -3,6 +3,7 @@ import core.util.BinTree;
 import core.world.Section;
 import flixel.FlxBasic;
 import flixel.FlxState;
+import Reg;
 import states.menu.WinState;
 import states.section.boss.BossState;
 

@@ -1,5 +1,5 @@
 package states.section.route;
-import core.Reg;
+import Reg;
 import flixel.FlxG;
 import states.section.SectionState;
 

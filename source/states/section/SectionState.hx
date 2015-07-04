@@ -1,6 +1,6 @@
 package states.section;
 import core.InputDelegate.Swipe;
-import core.Reg;
+import Reg;
 import entities.player.Player;
 import states.PhysicsState;
 
@@ -13,6 +13,7 @@ import states.PhysicsState;
 class SectionState extends PhysicsState
 {	
 	var _player:Player;
+	// TODO init TiledLevel
 	
 	override public function create() {
 		super.create();

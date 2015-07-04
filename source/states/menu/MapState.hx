@@ -1,5 +1,5 @@
 package states.menu;
-import core.Reg;
+import Reg;
 import flixel.FlxG;
 
 /**

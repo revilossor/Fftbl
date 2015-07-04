@@ -1,4 +1,5 @@
-package core;
+package;
+import core.InputDelegate;
 import core.ui.HUD;
 import core.util.BinTree;
 import core.world.Section;

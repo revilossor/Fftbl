@@ -14,6 +14,7 @@ import nape.shape.Polygon;
 import nape.space.Space;
 import nape.util.Debug;
 import nape.util.ShapeDebug;
+import Reg;
 
 /**
  * ...

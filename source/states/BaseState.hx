@@ -1,6 +1,6 @@
 package states;
 import core.InputDelegate;
-import core.Reg;
+import Reg;
 import core.ui.HUD;
 import flixel.FlxG;
 import flixel.FlxState;

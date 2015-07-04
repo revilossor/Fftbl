@@ -21,10 +21,10 @@ class InputDelegate extends FlxBasic
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	
-	var _holdThreshold:UInt = 15;
+	var _holdTickLength:UInt = 5;
 	var _holdTimer:UInt = 0;
 	var _holdTicks:UInt = 0;
-	var _swipeThreshold:Float = 10;
+	var _swipeDistanceThreshold:Float = 10;		// TODO min / max ?
 	
 	@isVar 
 	public var enabled(never, set):Bool; var _enabled:Bool = false;
@@ -40,7 +40,7 @@ class InputDelegate extends FlxBasic
 		if(_enabled) {
 			if (FlxG.mouse.justPressed) { onPress(); }
 			if (FlxG.mouse.justReleased) { onRelease(); }
-			if (FlxG.mouse.pressed) { if (_holdTimer++ >= _holdThreshold) { holdTick(); } }
+			if (FlxG.mouse.pressed) { if (_holdTimer++ >= _holdTickLength) { holdTick(); } }
 		}
 	}
 	
@@ -48,7 +48,8 @@ class InputDelegate extends FlxBasic
 		onPressed.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
 	}
 	function onRelease() {
-		if (_holdTicks == 0) { sortSwipes(); }	
+		//if (_holdTicks == 0) { sortSwipes(); }		// TODO need to seperate swipes and drag path better	
+		sortSwipes();
 		_holdTimer = _holdTicks = 0;
 		onReleased.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
 	}
@@ -60,7 +61,7 @@ class InputDelegate extends FlxBasic
 	}
 	function sortSwipes() {
 		for (swipe in FlxG.swipes) {
-			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _swipeThreshold) ?
+			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _swipeDistanceThreshold) ?
 				onTap.dispatch(swipe.startPosition):
 				onSwipe.dispatch({at:swipe.startPosition, direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition)});
 		}

@@ -24,7 +24,7 @@ class ModelLoader
 	
 	function parse(data):Model {
 		trace('parse $data');
-		return new Model();
+		return new Model(data);
 	}
 }
 

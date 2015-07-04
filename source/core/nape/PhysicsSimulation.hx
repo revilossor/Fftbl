@@ -78,7 +78,7 @@ class PhysicsSimulation
 	}
 	
 	public function update() {
-		if(!Reg.isPaused) {_space.step(FlxG.elapsed * FlxG.timeScale); }
+		if(!Reg.model.settings.isPaused) {_space.step(FlxG.elapsed * FlxG.timeScale); }
 		drawDebug();
 	}
 	function drawDebug():Void {

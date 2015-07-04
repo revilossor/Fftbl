@@ -1,8 +1,8 @@
 package states;
 import core.model.ModelLoader;
-import Reg;
 import core.world.World;
 import flixel.FlxG;
+import Reg;
 
 /**
  * ...
@@ -16,12 +16,11 @@ class InitState extends BaseState		// TODO some of the init stuff in here might 
 		Reg.hud.showTitle('init state');
 		// TODO load config / world models here
 		var loader = new ModelLoader();
-		//loader.get(
-		
-		
-		Reg.world = new World();
-		Reg.sectionStage = SectionStage.Intro;
-		//_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );
-		Reg.input.onReleased.addOnce(function(at) { fadeToState(Reg.world.getCurrentIntro()); } );
+		loader.get('https://dl.dropboxusercontent.com/u/20197634/fftbl/model.xml', function(model) {
+			Reg.model = model;
+			//Reg.sectionStage = SectionStage.Intro;
+			//_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );
+			Reg.input.onReleased.addOnce(function(at) { fadeToState(Reg.model.world.getCurrentIntro()); } );	// TODO shortcuts getter in model
+		});
 	}
 }

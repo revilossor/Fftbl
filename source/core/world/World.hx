@@ -1,4 +1,5 @@
 package core.world;
+import core.model.ProgressModel.SectionStage;
 import core.util.BinTree;
 import core.world.Section;
 import flixel.FlxBasic;
@@ -21,7 +22,7 @@ class World extends FlxBasic
 		trace('construct');
 		super();
 		_depth = getMaxDepth(Reg.sections.length);
-		Reg.sectionTree = _map = build(_depth);
+		_map = build(_depth);
 	}
 	
 	function getMaxDepth(total:UInt, ?index:UInt = 1):UInt {
@@ -38,34 +39,34 @@ class World extends FlxBasic
 	}
 	
 	public function getCurrentIntro():Class<FlxState> { 
-		return Reg.sectionTree.value.intro == null ?
+		return _map.value.intro == null ?
 					WinState:
-					Reg.sectionTree.value.intro;
+					_map.value.intro;
 	}
 	public function getNext(?direction:BossResolution):Class<FlxState> {
-		trace('get next - currently at node ${Reg.sectionTree.value.index} in stage ${Reg.sectionStage}');
-		switch(Reg.sectionStage) {
+		trace('get next - currently at node ${_map.value.index} in stage ${Reg.model.progress.sectionStage}');
+		switch(Reg.model.progress.sectionStage) {
 			case SectionStage.Intro	:
-				Reg.sectionStage = SectionStage.Route;
-				return Reg.sectionTree.value.route;
+				Reg.model.progress.sectionStage = SectionStage.Route;
+				return _map.value.route;
 			case SectionStage.Route	:
-				Reg.sectionStage = SectionStage.Boss;
-				return Reg.sectionTree.value.boss;
+				Reg.model.progress.sectionStage = SectionStage.Boss;
+				return _map.value.boss;
 			case SectionStage.Boss	:
-				Reg.sectionStage = SectionStage.Intro;
+				Reg.model.progress.sectionStage = SectionStage.Intro;
 				if (direction == BossResolution.Right) {
-					var tree = Reg.sectionTree.right;
-					tree == null ? return WinState : Reg.sectionTree = tree;
+					var tree = _map.right;
+					tree == null ? return WinState : _map = tree;
 					return getCurrentIntro();
 				}else if (direction == BossResolution.Left) {
-					var tree = Reg.sectionTree.left;
-					tree == null ? return WinState : Reg.sectionTree = tree;
+					var tree = _map.left;
+					tree == null ? return WinState : _map = tree;
 					return getCurrentIntro();
 				}else {
 					trace('ERROR! tried to getNext when on boss stage, and didnt pass a resolution!');
 					return getCurrentIntro();
 				}
-			default : trace('ERROR! tried to getNext but Reg.sectionStage wasnt recognised!');
+			default : trace('ERROR! tried to getNext but Reg.model.progress.sectionStage wasnt recognised!');
 		}
 		return getCurrentIntro();
 	}
@@ -74,9 +75,4 @@ class World extends FlxBasic
 		 _map = null;
 		super.destroy();
 	}
-}
-enum SectionStage {
-	Intro;
-	Route;
-	Boss;
 }

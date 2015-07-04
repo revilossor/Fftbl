@@ -26,7 +26,7 @@ class SectionState extends PhysicsState
 	}	
 	
 	function setPaused(value:Bool) {
-		Reg.hud.setPause(Reg.isPaused = value);
+		Reg.hud.setPause(Reg.model.settings.isPaused = value);
 	}
 	function onTap(at):Void {
 		trace('on tap');

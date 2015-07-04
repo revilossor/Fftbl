@@ -46,7 +46,7 @@ class Entity extends FlxSprite
 	}
 	function onSwipeOn(swipe:Swipe) { }
 	override public function update() {
-		if (!Reg.isPaused) { super.update(); }
+		if (!Reg.model.settings.isPaused) { super.update(); }
 	}
 	// TODO destruction tells xml loaded level model entity with this id has been destroyed
 }

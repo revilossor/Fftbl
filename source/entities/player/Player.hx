@@ -56,13 +56,12 @@ class Player extends PhysicsEntity
 	override public function onHeldOn(at) {
 		Reg.hud.showInfo("held on player");
 	}
-	override public function onHeldTick(at:FlxPoint, index:UInt) {		// TODO memory leak when dragging player waypoints? is it just cos instantiating stuff?
+	override public function onHeldTick(at:FlxPoint, index:UInt) {		// TODO cant drag path when following path. cancel?
 		super.onHeldTick(at, index);
 		if (_isDragging) { 
-			Reg.hud.showInfo('drag player position node'); 
 			Reg.hud.addPlayerWaypoint(at);
 			_waypoints.push(at);
-			FlxG.camera.flash(FlxColor.WHITE, 0.1);
+			//FlxG.camera.flash(FlxColor.WHITE, 0.1);
 			// TODO draw spline in hud
 		}
 	}
@@ -87,7 +86,11 @@ class Player extends PhysicsEntity
 	}
 	function popWaypoint() {
 		trace('pop waypoint');
-		if (_waypoints.length == 1) { _forward.setxy(0, 0); Reg.hud.clearPlayerWaypoints(); }
+		//if (_waypoints.length == 1) { _forward.setxy(0, 0); Reg.hud.clearPlayerWaypoints(); }
+		
+		
+		Reg.hud.popWaypoint();
+		_waypoints[0].put();
 		_waypoints.splice(0, 1);
 		// TODO clear waypoints / spline in hud one by one
 		trace('\tlength ${_waypoints.length}');

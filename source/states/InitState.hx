@@ -14,7 +14,7 @@ class InitState extends BaseState		// TODO some of the init stuff in here might 
 		super.create();
 		FlxG.camera.bgColor = 0xffff00ff;
 		Reg.hud.showTitle('init state');
-		var loader = new ModelLoader();
+		var loader = new ModelLoader();		// TODO error handler ?
 		loader.get('https://dl.dropboxusercontent.com/u/20197634/fftbl/model.xml', function(model) {
 			Reg.model = model;
 			//_input.onReleased.addOnce(function(at) { fadeToState(MenuState); } );

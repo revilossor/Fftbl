@@ -1,7 +1,11 @@
 package core.world.tiled;
 import core.world.tiled.TiledMap;
 import core.world.tiled.TiledTileSet;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
+import flixel.util.FlxRect;
 import haxe.io.Path;
 
 /**
@@ -15,22 +19,20 @@ import haxe.io.Path;
  */
 class TiledLevel extends TiledMap
 {
-	//private inline static var c_PATH_LEVEL_TILESHEETS = "assets/images/tiles/";
+	private inline static var c_PATH_LEVEL_TILESHEETS = "assets/images/";
 	
-	//public var backgroundTiles:FlxGroup;
-	//public var foregroundTiles:FlxGroup;
+	//private var collidableTileLayers:Array<FlxTilemap>;		// TODO physics?
 	
-	//private var collidableTileLayers:Array<FlxTilemap>;
+	public var environment:FlxGroup;
 	
 	public function new(tiledLevel:Dynamic)
 	{
 		super(tiledLevel);
 		
-		//backgroundTiles = new FlxGroup();
-		//foregroundTiles = new FlxGroup();
+		environment = new FlxGroup();
 		
-		//FlxG.camera.bounds = new FlxRect(0, 0, fullWidth, FlxG.height);
-		//FlxG.worldBounds.set(0, 0, fullWidth, FlxG.height);
+		FlxG.camera.bounds = new FlxRect(0, 0, fullWidth, fullHeight);
+		FlxG.worldBounds.set(0, 0, fullWidth, fullHeight);
 		
 		for (tileLayer in layers) {
 			var tileSheetName:String = tileLayer.properties.get("tileset");
@@ -48,11 +50,13 @@ class TiledLevel extends TiledMap
 				trace("Tileset '" + tileSheetName + " not found. Did you mispell the 'tilesheet' property in " + tileLayer.name + "' layer?");
 			}
 			var imagePath = new Path(tileSet.imageSource);
-			//var processedPath = c_PATH_LEVEL_TILESHEETS + imagePath.file + "." + imagePath.ext;
+			var processedPath = c_PATH_LEVEL_TILESHEETS + imagePath.file + "." + imagePath.ext;
 			var tilemap:FlxTilemap = new FlxTilemap();
 			tilemap.widthInTiles = width;
 			tilemap.heightInTiles = height;
-			//tilemap.loadMap(tileLayer.tileArray, processedPath, tileSet.tileWidth, tileSet.tileHeight, 0, 1, 1, 1);
+			
+			tilemap.loadMap(tileLayer.tileArray, processedPath, tileSet.tileWidth, tileSet.tileHeight, 0, 1, 1, 1);
+			environment.add(tilemap);
 		/*	if (tileLayer.properties.contains("nocollide")) {
 				backgroundTiles.add(tilemap);
 			} else {

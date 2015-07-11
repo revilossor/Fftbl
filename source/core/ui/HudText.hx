@@ -21,6 +21,7 @@ class HudText extends FlxText
 		_start = start;
 		_end = end;
 		_speed = speed;
+		scrollFactor.set();
 	}
 	public function show(message:String, ?autohide:Bool = true):Void {
 		text = message;
@@ -30,6 +31,5 @@ class HudText extends FlxText
 		new FlxTimer(tween == null ? 0.1 : _speed, function(timer) {
 			FlxTween.tween(this, { x:_start.x, y:_start.y }, _speed, { type:FlxTween.ONESHOT } );
 		});
-	}
-	
+	}	
 }

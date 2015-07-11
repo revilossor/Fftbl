@@ -1,7 +1,7 @@
 package states.section;
 import core.InputDelegate.Swipe;
-import Reg;
 import entities.player.Player;
+import Reg;
 import states.PhysicsState;
 
 /**

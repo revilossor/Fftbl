@@ -4,7 +4,6 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.util.FlxPoint;
 import flixel.util.FlxSignal.FlxTypedSignal;
-import nape.geom.Vec2;
 
 /**
  * ...

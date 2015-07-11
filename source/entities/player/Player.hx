@@ -1,13 +1,13 @@
 package entities.player;
 import core.entity.PhysicsEntity;
-import core.InputDelegate;
-import Reg;
+import core.InputDelegate.InteractionDirection;
+import core.InputDelegate.Swipe;
 import core.util.Vec2Func;
 import flixel.FlxG;
-import flixel.util.FlxColor;
 import flixel.util.FlxPoint;
 import nape.geom.Vec2;
 import nape.phys.Material;
+import Reg;
 
 /**
  * ...
@@ -86,7 +86,7 @@ class Player extends PhysicsEntity
 	}
 	function popWaypoint() {
 		trace('pop waypoint');
-		//if (_waypoints.length == 1) { _forward.setxy(0, 0); Reg.hud.clearPlayerWaypoints(); }
+		if (_waypoints.length == 1) { endPath(); }
 		
 		
 		Reg.hud.popWaypoint();
@@ -95,5 +95,10 @@ class Player extends PhysicsEntity
 		// TODO clear waypoints / spline in hud one by one
 		trace('\tlength ${_waypoints.length}');
 	}
+	
+	function endPath():Void {
+		_forward.setxy(0, 0);
+	}
+	
 	
 }

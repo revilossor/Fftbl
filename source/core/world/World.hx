@@ -6,7 +6,7 @@ import flixel.FlxBasic;
 import flixel.FlxState;
 import Reg;
 import states.menu.WinState;
-import states.section.boss.BossState;
+import states.section.boss.BossState.BossResolution;
 
 /**
  * ...

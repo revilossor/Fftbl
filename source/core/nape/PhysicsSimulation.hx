@@ -6,10 +6,8 @@ import nape.callbacks.CbType;
 import nape.callbacks.InteractionCallback;
 import nape.callbacks.InteractionListener;
 import nape.callbacks.InteractionType;
-import nape.dynamics.InteractionFilter;
 import nape.phys.Body;
 import nape.phys.BodyType;
-import nape.phys.Material;
 import nape.shape.Polygon;
 import nape.space.Space;
 import nape.util.Debug;
@@ -27,7 +25,7 @@ class PhysicsSimulation
 	var _width:Float;
 	var _height:Float;
 	
-	var _floorInteractionFilter:InteractionFilter = new InteractionFilter(-1, -1, -1, -1, 1, -1);	
+	//var _floorInteractionFilter:InteractionFilter = new InteractionFilter(-1, -1, -1, -1, 1, -1);	
 	
 	var _wallCollisionListener:InteractionListener;
 	var _wallCollisionType:CbType = new CbType();
@@ -38,7 +36,7 @@ class PhysicsSimulation
 	public function new(xp:Float, yp:Float, width:Float, height:Float) 
 	{
 		_space = new Space();
-		addFloor(xp, yp, width, height);
+		//addFloor(xp, yp, width, height);
 		addEdges(xp, yp, width, height);
 		_wallCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCollisionType, _entityCollisionType, onWallEntityCollision);
 		_space.listeners.add(_wallCollisionListener);
@@ -51,17 +49,17 @@ class PhysicsSimulation
 		trace('wall collision');
 	}
 	
-	function addFloor(xp:Float, yp:Float, width:Float, height:Float):Body {	// TODO dont track floor in var, just add by w, h, material, fluidProps so can have different areas
-		var floor = new Body(BodyType.STATIC);
-		var shape = new Polygon(Polygon.rect(0, 0, width, height), Material.sand(), _floorInteractionFilter);	// TODO materials for floor types
-		//shape.sensorEnabled = false;	// TODO spawn particles sensor on floor?
-		floor.debugDraw = false;
-		shape.fluidEnabled = true;
-		floor.shapes.push(shape);
-		floor.position.setxy(xp, yp);
-		floor.space = _space;
-		return floor;
-	}
+	//function addFloor(xp:Float, yp:Float, width:Float, height:Float):Body {	// TODO dont track floor in var, just add by w, h, material, fluidProps so can have different areas
+		//var floor = new Body(BodyType.STATIC);
+		//var shape = new Polygon(Polygon.rect(0, 0, width, height), Material.sand(), _floorInteractionFilter);	// TODO materials for floor types
+		////shape.sensorEnabled = false;	// TODO spawn particles sensor on floor?
+		//floor.debugDraw = false;
+		//shape.fluidEnabled = true;
+		//floor.shapes.push(shape);
+		//floor.position.setxy(xp, yp);
+		//floor.space = _space;
+		//return floor;
+	//}
 	function addEdges(xp:Float, yp:Float, width:Float, height:Float) {// TODO different spaces?
 		addAAWall(xp, yp, width, -32);
 		addAAWall(xp, yp + height, width, 32);
@@ -78,8 +76,9 @@ class PhysicsSimulation
 	}
 	
 	public function update() {
-		if(!Reg.model.settings.isPaused) {_space.step(FlxG.elapsed * FlxG.timeScale); }
-		drawDebug();
+		if (!Reg.model.settings.isPaused) { _space.step(FlxG.elapsed * FlxG.timeScale); }
+		FlxG.worldBounds.set(FlxG.camera.scroll.x, FlxG.camera.scroll.y, FlxG.camera.scroll.x + FlxG.width, FlxG.camera.scroll.y + FlxG.height);
+		//drawDebug();
 	}
 	function drawDebug():Void {
 		if (debug == null || _space == null){ return; }
@@ -101,7 +100,7 @@ class PhysicsSimulation
 	public function destroy() {
 		trace('destroy');
 		_space = null;
-		_floorInteractionFilter = null;
+		//_floorInteractionFilter = null;
 		_wallCollisionListener = null;
 		_wallCollisionType = null;
 		_entityCollisionType = null;

@@ -24,7 +24,7 @@ class Player extends PhysicsEntity
 	
 	public function new(?xp:Float = 0, ?yp:Float = 0) 
 	{
-		super(xp, yp, 1500);
+		super(xp, yp, 4500);
 		loadGraphic('assets/images/player.png', true, 100, 70);
 		animation.add(UP, [0]);
 		animation.add(DOWN, [1]);
@@ -46,11 +46,11 @@ class Player extends PhysicsEntity
 	override function onSwipeOn(swipe:Swipe) {
 		Reg.hud.showInfo('swipe on player');
 		switch(swipe.direction) {
-			case InteractionDirection.Up	:	body.applyImpulse(Vec2.get(0,-((FlxG.height * 50) * FlxG.elapsed), true));
-			case InteractionDirection.Down	:	body.applyImpulse(Vec2.get(0,((FlxG.height * 50) * FlxG.elapsed), true));
-			case InteractionDirection.Left	:	body.applyImpulse(Vec2.get(-((FlxG.width * 50) * FlxG.elapsed), 0, true));
-			case InteractionDirection.Right	:	body.applyImpulse(Vec2.get(((FlxG.width * 50) * FlxG.elapsed), 0, true));
-			case InteractionDirection.None	:
+			case InteractionDirection.Up	:	dodge(Vec2.get(0,-((FlxG.height * 100) * FlxG.elapsed), true));
+			case InteractionDirection.Down	:	dodge(Vec2.get(0,((FlxG.height * 100) * FlxG.elapsed), true));
+			case InteractionDirection.Left	:	dodge(Vec2.get(-((FlxG.width * 100) * FlxG.elapsed), 0, true));
+			case InteractionDirection.Right	:	dodge(Vec2.get(((FlxG.width * 100) * FlxG.elapsed), 0, true));
+			case InteractionDirection.None	:	
 		}
 	}
 	override public function onHeldOn(at) {

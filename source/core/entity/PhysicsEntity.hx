@@ -25,6 +25,7 @@ class PhysicsEntity extends PoolableEntity
 	
 	override public function update() {
 		body.applyImpulse(Vec2.weak(_forward.x * FlxG.elapsed, _forward.y * FlxG.elapsed));
+		body.velocity.muleq(0.9);
 		trackBodyPosition();
 		super.update(); 
 	}
@@ -55,5 +56,10 @@ class PhysicsEntity extends PoolableEntity
 		if(_forward.length > _bodyMaxSpeed) {
 			_forward.length = _bodyMaxSpeed;
 		}
+	}
+	
+	public function dodge(impulse:Vec2) {
+		body.velocity.setxy(0, 0);
+		body.applyImpulse(impulse);
 	}
 }

@@ -61,9 +61,12 @@ class InputDelegate extends FlxBasic
 	function sortSwipes() {
 		for (swipe in FlxG.swipes) {
 			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _swipeDistanceThreshold) ?
-				onTap.dispatch(swipe.startPosition):
-				onSwipe.dispatch({at:swipe.startPosition, direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition)});
-		}
+				onTap.dispatch(screenToWorld(swipe.startPosition)):
+				if (_holdTicks <= 4) { onSwipe.dispatch( { at:screenToWorld(swipe.startPosition), direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition) } ); }
+		}	// BUG can swipe and path at the same time
+	}
+	function screenToWorld(point) {
+		return FlxPoint.weak(FlxG.camera.scroll.x + point.x, FlxG.camera.scroll.y + point.y);
 	}
 	function getInteractionDirection(angle):InteractionDirection {
 		var absAngle = Math.abs(angle);

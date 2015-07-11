@@ -1,9 +1,8 @@
 package states.section.intro;
-import core.world.tiled.TiledLevel;
-import flixel.FlxG;
-import Reg;
 import core.util.TypedPool;
 import entities.Ball;
+import flixel.FlxG;
+import Reg;
 
 /**
  * ...

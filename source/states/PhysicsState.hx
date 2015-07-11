@@ -2,7 +2,6 @@ package states;
 import core.entity.PhysicsEntity;
 import core.nape.PhysicsSimulation;
 import core.world.tiled.TiledLevel;
-import flixel.FlxG;
 
 /**
  * ...

@@ -2,7 +2,6 @@ package core.world.tiled;
 import core.world.tiled.TiledMap;
 import core.world.tiled.TiledTileSet;
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.tile.FlxTilemap;
 import flixel.util.FlxRect;

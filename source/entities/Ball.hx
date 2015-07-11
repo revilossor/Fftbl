@@ -14,8 +14,8 @@ class Ball extends PhysicsEntity
 	{
 		super(xp, yp);
 		loadGraphic('assets/images/ball.png');
-		makeCircleBody(Material.rubber());
-		body.velocity.setxy	((-1 + (Math.random() * 2)) * 1000, (-1 + (Math.random() * 2)) * 1000);
+		makeCircleBody(new Material(1, 1.4, 1.5, 0.01));
+		body.mass = 0.1;
 	}
 	
 	override public function update() {
@@ -23,6 +23,6 @@ class Ball extends PhysicsEntity
 		body.angularVel *= 0.9;
 	}
 	override function onTapOn(at:FlxPoint) {
-		body.applyImpulse(Vec2.get(-1 + (Math.random() * 2) * 2000, -1 + (Math.random() * 2) * 2000, true));
+		body.applyImpulse(Vec2.get(-1 + (Math.random() * 2) * 100, -1 + (Math.random() * 2) * 100, true));
 	}
 }

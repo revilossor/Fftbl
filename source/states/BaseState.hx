@@ -17,7 +17,7 @@ class BaseState extends FlxState
 		trace('construct');
 		super.create();
 		add(Reg.input = new InputDelegate());
-		add(Reg.hud = new HUD());
+		Reg.hud = new HUD();
 		FlxG.camera.fade(FlxColor.BLACK, 1, true, function() { Reg.input.enabled = true; } );
 	}
 	

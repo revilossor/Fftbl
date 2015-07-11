@@ -10,19 +10,14 @@ import core.world.tiled.TiledLevel;
 class PhysicsState extends BaseState
 {	
 	var _physics:PhysicsSimulation;
-	var _level:TiledLevel;	// TODO in sectionState?
-
 	
 	override public function create() {
-		_level = new TiledLevel("assets/data/sections/test.tmx");		// TODO path is in loaded model, init physics with w / h
-		add(_level.environment);		// TTODO level state?
 		super.create();
-		initPhysics();
 	}
 	
-	function initPhysics() {
+	function initPhysics(width, height) {
 		trace('init new physics simulation');
-	 	_physics = new PhysicsSimulation(0, 0, _level.fullWidth, _level.fullHeight);
+	 	_physics = new PhysicsSimulation(0, 0, width, height);
 	}
 	override public function add(entity){ // TODO remove also removes from physics
 		super.add(entity);
@@ -31,14 +26,13 @@ class PhysicsState extends BaseState
 	}
 	
 	override public function update() {
-		_physics.update();
+		if( _physics != null) { _physics.update(); }
 		super.update();
 	}
 	
 	override public function destroy() {
-		_physics.destroy();
+		if( _physics != null) { _physics.destroy(); }
 		_physics = null;
-		_level = null;
 		super.destroy();
 	}
 }

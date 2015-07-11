@@ -1,5 +1,7 @@
 package states.section;
 import core.InputDelegate.Swipe;
+import core.nape.PhysicsSimulation;
+import core.world.tiled.TiledLevel;
 import entities.player.Player;
 import Reg;
 import states.PhysicsState;
@@ -13,7 +15,7 @@ import states.PhysicsState;
 class SectionState extends PhysicsState
 {	
 	var _player:Player;
-	// TODO init TiledLevel
+	var _level:TiledLevel;
 	
 	override public function create() {
 		super.create();
@@ -22,8 +24,12 @@ class SectionState extends PhysicsState
 		Reg.input.onHeld.add(onHeld);
 		Reg.input.onHeldTick.add(onHeldTick);
 		Reg.input.onReleased.add(onReleased);
-		add(_player = new Player(300, 700));
-	}	
+		_level = new TiledLevel("assets/data/sections/test.tmx");
+		_physics = new PhysicsSimulation(0, 0, _level.fullWidth, _level.fullHeight);
+		add(_level.environment);
+		add(_player = new Player(300, 700));		// TODO player start in level model
+		add(Reg.hud);
+	}
 	
 	function setPaused(value:Bool) {
 		Reg.hud.setPause(Reg.model.settings.isPaused = value);
@@ -45,6 +51,7 @@ class SectionState extends PhysicsState
 	}
 	override public function destroy() {
 		_player.destroy(); _player = null;
+		_level = null;
 		super.destroy();
 	}
 }

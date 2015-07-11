@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<title>stadium section</title>
+	<worldMap>
+		<icon>pathToIconImage.png</icon>
+		<summary>
+			<unvisited>
+				You are the champ!
+				But something doesn't feel right...
+				As you approach the winners podium to claim your trophy, somethig happens!
+				The baddie ( whoever that is ) steals the trophy!
+				So your overall mission is to get that back now.
+				First step is to find out what th baddie is all about. 
+				I suppose there will be a clue left behind...
+			</unvisited>
+			<in-progress>
+				You still haven't finished this bit, whatever it is.
+			</in-progress>
+			<completed-left>
+				You have finished this secion,
+				And chose to go left.
+			</completed-left>
+			<completed-left>
+				You have finished this secion,
+				And chose to go right.
+			</completed-left>
+		</summary>
+	</worldMap>
+	<segments>
+		<intro>
+			<tilemap>exampleIntroSegmentMap.tmx</tilemap>	<!--TODO have to load tilesets in too..... but how?-->
+		</intro>
+		<journey>
+			<tilemap>exampleJourneySegmentMap.tmx</tilemap>
+		</journey>
+		<boss>
+			<tilemap>exampleIntroSegmentMap.tmx</tilemap>
+			<left>
+				<copy>the path goes left...</copy>
+			</left>
+			<right>
+				<copy>the hidden path goes right...</copy>
+			</right>
+		</boss>
+	</segments>
+</data>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<data>
+	<title>hello Fftbl model!</title>
+	<sections>
+		<section src="./sections/stadium_section.xml">Stadium</section>
+		<section src="./sections/stadium_section.xml">Stadium2</section>
+		<section src="./sections/stadium_section.xml">Stadium3</section>
+		<section src="./sections/stadium_section.xml">Stadium4</section>
+	</sections>
+</data>

@@ -44,18 +44,18 @@ class InputDelegate extends FlxBasic
 	}
 	
 	function onPress() {
-		onPressed.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
+		onPressed.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak()));
 	}
 	function onRelease() {
 		//if (_holdTicks == 0) { sortSwipes(); }		// TODO need to seperate swipes and drag path better	
 		sortSwipes();
 		_holdTimer = _holdTicks = 0;
-		onReleased.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
+		onReleased.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak()));
 	}
 	function holdTick() {
 		_holdTicks++ == 0 ? 
-			onHeld.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak())):
-			onHeldTick.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()), _holdTicks);
+			onHeld.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak())):
+			onHeldTick.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak()), _holdTicks);
 		_holdTimer = 0;
 	}
 	function sortSwipes() {

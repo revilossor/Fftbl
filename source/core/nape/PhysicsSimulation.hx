@@ -43,7 +43,7 @@ class PhysicsSimulation
 		_wallCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCollisionType, _entityCollisionType, onWallEntityCollision);
 		_space.listeners.add(_wallCollisionListener);
 		
-		debug = new ShapeDebug(FlxG.width, FlxG.height);
+		debug = new ShapeDebug(Std.int(width), Std.int(height));
 		FlxG.addChildBelowMouse(debug.display);
 	}
 	

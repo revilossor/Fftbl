@@ -1,7 +1,7 @@
 package states.section;
 import core.InputDelegate.Swipe;
-import core.Reg;
 import entities.player.Player;
+import Reg;
 import states.PhysicsState;
 
 /**
@@ -13,6 +13,7 @@ import states.PhysicsState;
 class SectionState extends PhysicsState
 {	
 	var _player:Player;
+	// TODO init TiledLevel
 	
 	override public function create() {
 		super.create();
@@ -25,7 +26,7 @@ class SectionState extends PhysicsState
 	}	
 	
 	function setPaused(value:Bool) {
-		Reg.hud.setPause(Reg.isPaused = value);
+		Reg.hud.setPause(Reg.model.settings.isPaused = value);
 	}
 	function onTap(at):Void {
 		trace('on tap');

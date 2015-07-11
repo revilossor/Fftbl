@@ -1,5 +1,5 @@
 package states.menu;
-import core.Reg;
+import Reg;
 import flixel.FlxG;
 
 /**
@@ -12,7 +12,7 @@ class MapState extends BaseState
 		super.create();
 		FlxG.camera.bgColor = 0xff428C4A;
 		Reg.hud.showTitle('map state');
-		Reg.input.onTap.addOnce(function(at) { fadeToState(Reg.world.getCurrentIntro()); } );
+		Reg.input.onTap.addOnce(function(at) { fadeToState(Reg.model.world.getCurrentIntro()); } );// TODO shortcut in model
 	}
 	
 }

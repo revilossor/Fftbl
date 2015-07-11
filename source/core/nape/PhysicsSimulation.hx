@@ -14,6 +14,7 @@ import nape.shape.Polygon;
 import nape.space.Space;
 import nape.util.Debug;
 import nape.util.ShapeDebug;
+import Reg;
 
 /**
  * ...
@@ -42,7 +43,7 @@ class PhysicsSimulation
 		_wallCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCollisionType, _entityCollisionType, onWallEntityCollision);
 		_space.listeners.add(_wallCollisionListener);
 		
-		debug = new ShapeDebug(FlxG.width, FlxG.height);
+		debug = new ShapeDebug(Std.int(width), Std.int(height));
 		FlxG.addChildBelowMouse(debug.display);
 	}
 	
@@ -77,7 +78,7 @@ class PhysicsSimulation
 	}
 	
 	public function update() {
-		if(!Reg.isPaused) {_space.step(FlxG.elapsed * FlxG.timeScale); }
+		if(!Reg.model.settings.isPaused) {_space.step(FlxG.elapsed * FlxG.timeScale); }
 		drawDebug();
 	}
 	function drawDebug():Void {

@@ -3,7 +3,7 @@ import flixel.util.FlxPoint;
 
 /**
  * ...
- * @author Oliver Ross TODO - static extention of flxpoint?
+ * @author Oliver Ross
  */
 class FlxPointFunc
 {

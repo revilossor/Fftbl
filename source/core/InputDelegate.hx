@@ -4,7 +4,6 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.util.FlxPoint;
 import flixel.util.FlxSignal.FlxTypedSignal;
-import nape.geom.Vec2;
 
 /**
  * ...
@@ -21,10 +20,10 @@ class InputDelegate extends FlxBasic
 	public var onPressed:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	public var onReleased:FlxTypedSignal<FlxPoint->Void> = new FlxTypedSignal<FlxPoint->Void>();
 	
-	var _holdThreshold:UInt = 15;
+	var _holdTickLength:UInt = 5;
 	var _holdTimer:UInt = 0;
 	var _holdTicks:UInt = 0;
-	var _swipeThreshold:Float = 10;
+	var _swipeDistanceThreshold:Float = 10;		// TODO min / max ?
 	
 	@isVar 
 	public var enabled(never, set):Bool; var _enabled:Bool = false;
@@ -40,30 +39,34 @@ class InputDelegate extends FlxBasic
 		if(_enabled) {
 			if (FlxG.mouse.justPressed) { onPress(); }
 			if (FlxG.mouse.justReleased) { onRelease(); }
-			if (FlxG.mouse.pressed) { if (_holdTimer++ >= _holdThreshold) { holdTick(); } }
+			if (FlxG.mouse.pressed) { if (_holdTimer++ >= _holdTickLength) { holdTick(); } }
 		}
 	}
 	
 	function onPress() {
-		onPressed.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
+		onPressed.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak()));
 	}
 	function onRelease() {
-		if (_holdTicks == 0) { sortSwipes(); }	
+		//if (_holdTicks == 0) { sortSwipes(); }		// TODO need to seperate swipes and drag path better	
+		sortSwipes();
 		_holdTimer = _holdTicks = 0;
-		onReleased.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()));
+		onReleased.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak()));
 	}
 	function holdTick() {
 		_holdTicks++ == 0 ? 
-			onHeld.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak())):
-			onHeldTick.dispatch(FlxG.mouse.getScreenPosition(FlxG.camera, FlxPoint.weak()), _holdTicks);
+			onHeld.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak())):
+			onHeldTick.dispatch(FlxG.mouse.getWorldPosition(FlxG.camera, FlxPoint.weak()), _holdTicks);
 		_holdTimer = 0;
 	}
 	function sortSwipes() {
 		for (swipe in FlxG.swipes) {
-			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _swipeThreshold) ?
-				onTap.dispatch(swipe.startPosition):
-				onSwipe.dispatch({at:swipe.startPosition, direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition)});
-		}
+			FlxPointFunc.distanceCheck(swipe.startPosition, swipe.endPosition, _swipeDistanceThreshold) ?
+				onTap.dispatch(screenToWorld(swipe.startPosition)):
+				if (_holdTicks <= 4) { onSwipe.dispatch( { at:screenToWorld(swipe.startPosition), direction:getInteractionDirection(swipe.angle), vector:FlxPointFunc.getBetween(swipe.startPosition, swipe.endPosition) } ); }
+		}	// BUG can swipe and path at the same time
+	}
+	function screenToWorld(point) {
+		return FlxPoint.weak(FlxG.camera.scroll.x + point.x, FlxG.camera.scroll.y + point.y);
 	}
 	function getInteractionDirection(angle):InteractionDirection {
 		var absAngle = Math.abs(angle);

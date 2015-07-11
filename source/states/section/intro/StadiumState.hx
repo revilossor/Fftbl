@@ -1,7 +1,8 @@
 package states.section.intro;
-import core.Reg;
 import core.util.TypedPool;
 import entities.Ball;
+import flixel.FlxG;
+import Reg;
 
 /**
  * ...
@@ -14,8 +15,9 @@ class StadiumState extends IntroState
 	override public function create() {
 		super.create();
 		Reg.input.enabled = true;
-		Reg.hud.showTitle('stadium intro state');	// TODO this overriding tween in parent makes me nervous
-		add(_balls.spawn(Ball, 100, 100));
+		Reg.hud.showTitle('stadium intro state');	// TODO this overriding tween in parent makes me nervous		
+		add(_balls.spawn(Ball, 100, 100));			// TODO in map
+		FlxG.camera.follow(_player);			
 	}
 	
 	override public function update() {
@@ -24,6 +26,5 @@ class StadiumState extends IntroState
 	override public function destroy() {
 		_balls.destroy(); _balls = null;
 		super.destroy();
-	}
-	
+	}	
 }

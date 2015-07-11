@@ -1,5 +1,5 @@
 package states.section.intro;
-import core.Reg;
+import Reg;
 import flixel.FlxG;
 
 /**

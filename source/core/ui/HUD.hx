@@ -35,12 +35,16 @@ class HUD extends FlxGroup
 		_playerWaypoints.spawn(PlayerHudWaypoint, at.x, at.y);
 	}
 	public function clearPlayerWaypoints() {
-		_playerWaypoints.callAll('kill');
+		_playerWaypoints.killAll();
+	}
+	public function popWaypoint() {
+		_playerWaypoints.killFirst();
 	}
 	
 	override public function destroy() {
 		trace('destroy');
-		_playerWaypoints.callAll('destroy');
+		_playerWaypoints.destroy();
+		_playerWaypoints = null;
 		_titleText = null;
 		_pauseText = null;
 		_infoText = null;

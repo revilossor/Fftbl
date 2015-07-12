@@ -21,7 +21,7 @@ class World extends FlxBasic
 	{
 		trace('construct');
 		super();
-		_depth = getMaxDepth(Reg.sections.length);
+		_depth = getMaxDepth(Reg.sections.length);		// TODO from model...
 		_map = build(_depth);
 	}
 	
@@ -44,16 +44,16 @@ class World extends FlxBasic
 					_map.value.intro;
 	}
 	public function getNext(?direction:BossResolution):Class<FlxState> {
-		trace('get next - currently at node ${_map.value.index} in stage ${Reg.model.progress.sectionStage}');
-		switch(Reg.model.progress.sectionStage) {
+		trace('get next - currently at node ${_map.value.index} in stage ${Reg.model.progress.currentSegment}');
+		switch(Reg.model.progress.currentSegment) {
 			case SectionStage.Intro	:
-				Reg.model.progress.sectionStage = SectionStage.Route;
+				Reg.model.progress.currentSegment = SectionStage.Route;
 				return _map.value.route;
 			case SectionStage.Route	:
-				Reg.model.progress.sectionStage = SectionStage.Boss;
+				Reg.model.progress.currentSegment = SectionStage.Boss;
 				return _map.value.boss;
 			case SectionStage.Boss	:
-				Reg.model.progress.sectionStage = SectionStage.Intro;
+				Reg.model.progress.currentSegment = SectionStage.Intro;
 				if (direction == BossResolution.Right) {
 					var tree = _map.right;
 					tree == null ? return WinState : _map = tree;

@@ -8,17 +8,20 @@ import haxe.Http;
 class ModelLoader
 {
 	public function new() {}
-	public function get(uri, onModel) {	// TODO pass in timestamp?
+	public function get(uri, onModel, onError) {	// TODO pass in timestamp?
 		// TODO cache in / get from appropriate storage ( consider timestamp, online status )
 		httpLoad(uri, function(data) {
 			onModel(parse(data));
+		}, function(message) {
+			onError(message);
 		});
-		// TODO return async backup local cached copy
+		// TODO return async backup local cached copy - TRAINING MODE SEGMENTS - see evernote
 	}
 	
-	function httpLoad(from, onData) {
+	function httpLoad(from, onData, onError) {
 		var httpLoader = new Http(from);
 		httpLoader.onData = onData;
+		httpLoader.onError = onError;
 		httpLoader.request(false);		// GET
 	}
 	

@@ -6,7 +6,7 @@ package core.model;
  */
 class ProgressModel
 {
-	public var sectionStage:SectionStage;
+	public var currentSegment:SectionStage;
 	
 	
 	public function new() 

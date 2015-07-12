@@ -11,9 +11,6 @@ import haxe.io.Path;
  * ...
  * @author Oliver Ross
  * 
- * mostly based on Flixel Demos
- * 
- * TODO make me again have to be able to construct from model data
  * 
  */
 class TiledLevel extends TiledMap

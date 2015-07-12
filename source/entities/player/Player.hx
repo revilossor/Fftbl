@@ -55,8 +55,9 @@ class Player extends PhysicsEntity
 	}
 	override public function onHeldOn(at) {
 		Reg.hud.showInfo("held on player");
+		endPath();
 	}
-	override public function onHeldTick(at:FlxPoint, index:UInt) {		// TODO cant drag path when following path. cancel?
+	override public function onHeldTick(at:FlxPoint, index:UInt) {
 		super.onHeldTick(at, index);
 		if (_isDragging) { 
 			Reg.hud.addPlayerWaypoint(at);
@@ -85,19 +86,21 @@ class Player extends PhysicsEntity
 			move(Vec2Func.magnify(between, distance));
 	}
 	function popWaypoint() {
-		trace('pop waypoint');
-		if (_waypoints.length == 1) { endPath(); }
-		
-		
-		Reg.hud.popWaypoint();
-		_waypoints[0].put();
-		_waypoints.splice(0, 1);
-		// TODO clear waypoints / spline in hud one by one
-		trace('\tlength ${_waypoints.length}');
+		if (_waypoints.length == 1) { endPath(); }		
+		else {
+			Reg.hud.popWaypoint();
+			_waypoints[0].put();
+			_waypoints.splice(0, 1);
+		}
 	}
 	
 	function endPath():Void {
 		_forward.setxy(0, 0);
+		while (_waypoints.length > 0) {
+			Reg.hud.popWaypoint();
+			_waypoints[0].put();
+			_waypoints.splice(0, 1);
+		}
 	}
 	
 	

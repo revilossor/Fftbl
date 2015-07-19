@@ -21,7 +21,7 @@ class PhysicsEntity extends PoolableEntity
 		_bodyMaxSpeed = speed;
 	}
 	
-	//TODO collision handling
+	//TODO collision callbacks
 	
 	override public function update() {
 		body.applyImpulse(Vec2.weak(_forward.x * FlxG.elapsed, _forward.y * FlxG.elapsed));

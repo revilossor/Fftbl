@@ -1,4 +1,5 @@
 package states;
+import core.model.Model;
 import core.model.ModelLoader;
 import core.world.World;
 import flixel.FlxG;
@@ -20,6 +21,10 @@ class InitState extends BaseState		// TODO some of the init stuff in here might 
 			fadeToState(Reg.model.world.getCurrentIntro());
 		}, function(message) {
 			trace('error loading model!');  
+		});
+		Reg.input.onTap.add(function(at) {
+			Reg.model = new Model('{}');
+			fadeToState(Reg.model.world.getCurrentIntro());
 		});
 	}
 }

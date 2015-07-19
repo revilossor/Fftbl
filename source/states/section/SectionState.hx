@@ -27,7 +27,7 @@ class SectionState extends PhysicsState
 		_level = new TiledLevel("assets/data/sections/test.tmx");
 		_physics = new PhysicsSimulation(0, 0, _level.fullWidth, _level.fullHeight);
 		add(_level.environment);
-		add(_player = new Player(300, 700));		// TODO player start in level model
+		add(_player = new Player(0, 0));
 		add(Reg.hud);
 	}
 	

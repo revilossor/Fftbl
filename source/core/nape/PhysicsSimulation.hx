@@ -62,9 +62,10 @@ class PhysicsSimulation
 	}
 	
 	public function update() {
+		
 		if (!Reg.model.settings.isPaused) { _space.step(FlxG.elapsed * FlxG.timeScale); }
-		FlxG.worldBounds.set(FlxG.camera.scroll.x, FlxG.camera.scroll.y, FlxG.camera.scroll.x + FlxG.width, FlxG.camera.scroll.y + FlxG.height);
-		//drawDebug();
+		//FlxG.worldBounds.set(FlxG.camera.scroll.x, FlxG.camera.scroll.y, FlxG.camera.scroll.x + FlxG.width, FlxG.camera.scroll.y + FlxG.height);
+		drawDebug();
 	}
 	function drawDebug():Void {
 		if (debug == null || _space == null){ return; }

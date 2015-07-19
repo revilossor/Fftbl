@@ -30,11 +30,12 @@ class Player extends PhysicsEntity
 		animation.add(DOWN, [1]);
 		animation.play(UP);
 		makeBoxBody(Material.wood());
+		body.allowRotation = false;
 	}
 	
 	override function onPressedOn(at:FlxPoint) {
 		animation.play(DOWN);
-		_isDragging = true;	// TODO ideally this would only flip when not a swipe...
+		_isDragging = true;	// TODO ideally this would only flip when not a swipe...	
 	}
 	override function onReleased(at:FlxPoint) {
 		super.onReleased(at);

@@ -27,6 +27,7 @@ class SectionState extends PhysicsState
 		Reg.input.onReleased.add(onReleased);
 		_level = new TiledLevel("assets/data/sections/test.tmx");
 		initPhysics(_level.fullWidth, _level.fullHeight);
+		Reg.hud.canvas.init(_level.fullWidth, _level.fullHeight);
 		add(_level.environment);
 		add(_player = new Player(0, 0));
 		add(Reg.hud);

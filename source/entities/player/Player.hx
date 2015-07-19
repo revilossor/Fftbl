@@ -35,6 +35,12 @@ class Player extends PhysicsEntity
 		body.allowRotation = false;
 	}
 	
+	public function onHit(entity) {
+		switch(Type.getClass(entity)) {
+			case Ball : trace('player hit ball');
+		}
+	}
+	
 	override function onPressedOn(at:FlxPoint) {
 		animation.play(DOWN);
 		_isDragging = true;				// TODO ideally this would only flip when not a swipe...	
@@ -105,6 +111,4 @@ class Player extends PhysicsEntity
 			_waypoints.splice(0, 1);
 		}
 	}
-	
-	
 }

@@ -23,14 +23,9 @@ class StadiumState extends IntroState
 	}
 	
 	override function onPlayerEntityCollision(entity) {
-		switch(Type.getClass(entity)) {
-			case Ball : trace('player hit ball');
-		}
+		_player.onHit(entity);
 	}
 	
-	override public function update() {
-		super.update();
-	}
 	override public function destroy() {
 		_balls.destroy(); _balls = null;
 		super.destroy();

@@ -1,4 +1,4 @@
-package entities;
+package core.ui;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
@@ -8,24 +8,22 @@ import flixel.util.FlxColor;
  * ...
  * @author Oliver Ross
  */
-class Path extends FlxGroup
+class Canvas extends FlxGroup
 {
-	var lineStyle = { color: FlxColor.RED, thickness: 1 };
-	var fillStyle = { color: FlxColor.RED, alpha: 0.5 };
-	var canvas = new FlxSprite();
+	var _lineStyle = { color: FlxColor.RED, thickness: 1 };
+	var _fillStyle = { color: FlxColor.RED, alpha: 0.5 };
+	var _canvas = new FlxSprite();
 	
 	public function new() 
 	{
 		super();
-		initCanvas();
 		//canvas.drawLine(0, 0, 100, 100, lineStyle);
+		add(_canvas);
 	}
 	
-	function initCanvas() {
-		canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
-		add(canvas);
+	public function init(width, height) {
+		_canvas.makeGraphic(width, height, FlxColor.TRANSPARENT, true);
 	}
-	
 }
 /*
 var lineDrawing:MovieClip;

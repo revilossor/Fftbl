@@ -1,8 +1,6 @@
 package states.section.intro;
-import core.entity.PhysicsEntity;
 import core.util.TypedPool;
 import entities.Ball;
-import entities.player.Player;
 import flixel.FlxG;
 import Reg;
 

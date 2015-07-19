@@ -1,8 +1,11 @@
 package core.ui;
-import flixel.FlxG;
+using flixel.util.FlxSpriteUtil;
+import core.ui.player.PlayerHudWaypoint;
+import core.util.TypedPool;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.util.FlxColor;
+import flixel.util.FlxPoint;
 
 /**
  * ...
@@ -10,124 +13,80 @@ import flixel.util.FlxColor;
  */
 class Canvas extends FlxGroup
 {
-	var _lineStyle = { color: FlxColor.RED, thickness: 1 };
-	var _fillStyle = { color: FlxColor.RED, alpha: 0.5 };
+	var _lineStyle:LineStyle = { color: FlxColor.RED, thickness: 20 };
+	var _fillStyle:FillStyle = { color: FlxColor.RED, alpha: 0.5 };
+
 	var _canvas = new FlxSprite();
+	var _pathNodes:Array<FlxPoint> = new Array<FlxPoint>();	// TODO make Path class so can have multiple paths....
 	
 	public function new() 
 	{
 		super();
-		//canvas.drawLine(0, 0, 100, 100, lineStyle);
 		add(_canvas);
 	}
-	
 	public function init(width, height) {
-		_canvas.makeGraphic(width, height, FlxColor.TRANSPARENT, true);
+		_canvas.makeGraphic(width, height, FlxColor.TRANSPARENT, true);	
+	}
+	
+	public function drawSpline(points:Array<FlxPoint>) {
+		for (i in 0...points.length - 1) {
+			var p0:FlxPoint = points[(i -1 + points.length) % points.length];
+            var p1:FlxPoint = points[i];
+            var p2:FlxPoint = points[(i +1 + points.length) % points.length];
+            var p3:FlxPoint = points[(i +2 + points.length) % points.length];
+			var last:FlxPoint = p1;
+			for (j in 0...11) {
+				var q:FlxPoint = catmullRom(p0, p1, p2, p3, 0.1 * j);
+				drawLine(last.x, last.y, q.x, q.y);
+				last = q;
+			}
+		}
+	}	
+	public function drawLine(startX, startY, endX, endY) {
+		_canvas.drawLine(startX, startY, endX, endY, _lineStyle);
+	}
+	public function cls() {
+		_canvas.fill(FlxColor.TRANSPARENT);
+	}
+	
+	function catmullRom(p0:FlxPoint, p1:FlxPoint, p2:FlxPoint, p3:FlxPoint, t:Float):FlxPoint {
+		//http://www.mvps.org/directx/articles/catmull/
+		return FlxPoint.weak(
+			0.5 * ((2*p1.x) +
+				t * ((-p0.x + p2.x) +
+				t * ((2 * p0.x -5 * p1.x +4 * p2.x -p3.x) +
+				t * (-p0.x +3 * p1.x -3 * p2.x +p3.x)))),
+			0.5 * ((2 * p1.y) +
+				t * (( -p0.y + p2.y) +
+				t * ((2 * p0.y - 5 * p1.y + 4 * p2.y -p3.y) +
+				t * ( -p0.y +3 * p1.y - 3 * p2.y +p3.y))))
+		);
+	}
+	
+	public function addPathNode(at:FlxPoint) {
+		_pathNodes.push(at);
+		cls();
+		drawSpline(_pathNodes);
+	}
+	public function removeFirstPathNode() {
+		_pathNodes[0].destroy();
+		_pathNodes[0] = null;
+		_pathNodes.splice(0, 1);
+		cls();
+		drawSpline(_pathNodes);
+	}
+	public function clearPath() {
+		while (_pathNodes.length > 0) {
+			removeFirstPathNode();
+		}
+	}
+	
+	override public function destroy() {
+		trace('destroy');
+		clearPath();
+		_pathNodes = null;
+		_canvas.destroy();
+		_canvas = null;
+		super.destroy();
 	}
 }
-/*
-var lineDrawing:MovieClip;
-
-var Spline_Points:Array = new Array();
-var Spline_Lengths:Array = new Array();
-
-var Interpolation_Points:Array = new Array(new Point(100,100),new Point(50,200),new Point(450,250),new Point(100,300));
-
-//CATMULL ROM FUNCTIONALITY
-function calculate_catmull(t:Number, p0:Number, p1:Number, p2:Number, p3:Number):Array{
-    var t2:Number = t*t;
-    var t3:Number = t2 * t;
-    // P(t)
-    var firstn:Number = (0.5 *( (2 * p1) + (-p0 + p2) * t +(2*p0 - 5*p1 + 4*p2 - p3) * t2 +(-p0 + 3*p1- 3*p2 + p3) * t3));
-    // P'(t)
-    var secondn:Number = 0.5 * (-p0 + p2) + t * (2*p0 - 5*p1 + 4*p2 - p3) + t2 * 1.5 * (-p0 + 3*p1 - 3*p2 + p3);
-    // P''(t)
-    var thirdn:Number = (2*p0 - 5*p1 + 4*p2 - p3) + t * 3.0 * (-p0 + 3*p1 - 3*p2 + p3);
-
-    var arr:Array = new Array(firstn, secondn, thirdn);
-    return arr;
-}
-//END CATMULL ROM FUNCTIONALITY
-function draw_anchors():void{
-    for(var k:Number = 0; k < Interpolation_Points.length; k++){ //loop through all the interpolation points, and render anchors
-        var marker:Ball = new Ball();
-        marker.x = Interpolation_Points[k].x;
-        marker.y = Interpolation_Points[k].y;
-        marker.scaleX = 0.5;
-        marker.scaleY = 0.5;
-        marker.id = k;
-        marker.addEventListener(MouseEvent.MOUSE_DOWN,start_dragging);
-        marker.addEventListener(MouseEvent.MOUSE_UP,stop_dragging);
-        addChild(marker);
-    }
-}
-function start_dragging(event:MouseEvent):void{
-    event.target.addEventListener(MouseEvent.MOUSE_MOVE, update_dragging);
-    event.target.startDrag();
-}
-function stop_dragging(event:MouseEvent):void{
-    event.target.removeEventListener(MouseEvent.MOUSE_MOVE, update_dragging);
-    event.target.stopDrag();
-}
-
-function update_dragging(event:MouseEvent):void{
-    Interpolation_Points[event.target.id].x = event.target.x;
-    Interpolation_Points[event.target.id].y = event.target.y;
-    lineDrawing.graphics.clear();
-    lineDrawing = new MovieClip();
-    Spline_Points = new Array();
-    init_track();
-}
-function init_track():void{
-    
-    for(var k:Number = 0; k < Interpolation_Points.length; k++){ //loop through all the interpolation points, and build splines in between
-        
-        var point0:Point = Interpolation_Points[k];
-        var point1:Point = Interpolation_Points[(k+1) % Interpolation_Points.length];
-        var point2:Point = Interpolation_Points[(k+2) % Interpolation_Points.length];
-        var point3:Point = Interpolation_Points[(k+3) % Interpolation_Points.length];
-
-        for(var g:Number = 0.0; g < 1.0; g += 0.005){ //for each segment, calculate 200 spine points and store onto vector
-            
-            var setX:Array = calculate_catmull(g, point0.x, point1.x, point2.x, point3.x);
-            var setY:Array = calculate_catmull(g, point0.y, point1.y, point2.y, point3.y);
-
-            // .x/.y/.z labelled incorrectly
-            var spline_spot:Point = new Point(setX[0],setY[0]);
-            var spline_spot_first:Point = new Point(setX[1],setY[1]);
-            var spline_spot_second:Point = new Point(setX[2],setY[2]);
-            //end incorrect labelling
-
-
-            Spline_Points.push(spline_spot);
-        }
-    }
-    
-    lineDrawing = new MovieClip();
-    this.addChild(lineDrawing);
-    
-    lineDrawing.graphics.lineStyle(1,0xFFFF00);
-    lineDrawing.graphics.moveTo(Spline_Points[0].x,Spline_Points[0].y); ///This is where we start drawing
-    for(var iter:Number = 1; iter < Spline_Points.length; iter++){
-        lineDrawing.graphics.lineTo(Spline_Points[iter].x, Spline_Points[iter].y);
-    }
-    
-    var filtersArray:Array = new Array();
-    var color_array:Array = new Array(0xFF0000, 0x00FF00, 0x0000FF);
-    for(var j:int = 0; j < color_array.length; j++){
-        var dropShadow:DropShadowFilter = new DropShadowFilter();
-        dropShadow.color = color_array[j];
-        dropShadow.blurX = 1;
-        dropShadow.blurY = 1;
-        dropShadow.angle = 0;
-        dropShadow.alpha = 1;
-        dropShadow.distance = 4;
-        filtersArray.push(dropShadow);
-    }
-    setChildIndex(lineDrawing,0);
-    
-    lineDrawing.filters = filtersArray;
-}
-draw_anchors();
-init_track();
-*/

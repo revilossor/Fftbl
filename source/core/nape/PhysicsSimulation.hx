@@ -26,6 +26,7 @@ class PhysicsSimulation
 	var _height:Float;
 	
 	var _wallCollisionListener:InteractionListener;
+	var _entityCollisionListener:InteractionListener;
 	var _wallCollisionType:CbType = new CbType();
 	var _entityCollisionType:CbType = new CbType();
 	
@@ -37,6 +38,8 @@ class PhysicsSimulation
 		addEdges(xp, yp, width, height);
 		_wallCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCollisionType, _entityCollisionType, onWallEntityCollision);
 		_space.listeners.add(_wallCollisionListener);
+		_entityCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _entityCollisionType, _entityCollisionType, onEntityEntityCollision);
+		_space.listeners.add(_entityCollisionListener);
 		
 		debug = new ShapeDebug(Std.int(width), Std.int(height));
 		FlxG.addChildBelowMouse(debug.display);
@@ -44,6 +47,12 @@ class PhysicsSimulation
 	
 	function onWallEntityCollision(collision:InteractionCallback) {
 		trace('wall collision');
+	}
+	function onEntityEntityCollision(collision:InteractionCallback) {
+		trace('entity collision');
+		
+		
+		
 	}
 	
 	function addEdges(xp:Float, yp:Float, width:Float, height:Float) {// TODO different spaces?

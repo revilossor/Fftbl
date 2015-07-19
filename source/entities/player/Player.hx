@@ -22,6 +22,8 @@ class Player extends PhysicsEntity
 	var _isDragging:Bool = false;	// TODO need to see this elsewhere for state change ui stuff...
 	var _waypoints:Array<FlxPoint> = [];
 	
+	var _hasBall:Bool = false;
+	
 	public function new(?xp:Float = 0, ?yp:Float = 0) 
 	{
 		super(xp, yp, 4500);
@@ -35,12 +37,12 @@ class Player extends PhysicsEntity
 	
 	override function onPressedOn(at:FlxPoint) {
 		animation.play(DOWN);
-		_isDragging = true;	// TODO ideally this would only flip when not a swipe...	
+		_isDragging = true;				// TODO ideally this would only flip when not a swipe...	
 	}
 	override function onReleased(at:FlxPoint) {
 		super.onReleased(at);
 		animation.play(UP);
-		if(_isDragging) {// TODO need a nicer way to do this...
+		if(_isDragging) {				// TODO need a nicer way to do this...
 			_isDragging = false;
 		}
 	}

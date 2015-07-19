@@ -1,6 +1,7 @@
 package core.nape;
 import core.entity.PhysicsEntity;
 import flixel.FlxG;
+import flixel.util.FlxSignal.FlxTypedSignal;
 import nape.callbacks.CbEvent;
 import nape.callbacks.CbType;
 import nape.callbacks.InteractionCallback;
@@ -30,29 +31,28 @@ class PhysicsSimulation
 	var _wallCollisionType:CbType = new CbType();
 	var _entityCollisionType:CbType = new CbType();
 	
-	var debug:Debug;
+	var _debug:Debug;
+	
+	public var onEntityEntityCollision:FlxTypedSignal<PhysicsEntity->PhysicsEntity->Void> = new FlxTypedSignal<PhysicsEntity->PhysicsEntity->Void>();
 	
 	public function new(xp:Float, yp:Float, width:Float, height:Float) 
 	{
 		_space = new Space();
 		addEdges(xp, yp, width, height);
-		_wallCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCollisionType, _entityCollisionType, onWallEntityCollision);
+		_wallCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _wallCollisionType, _entityCollisionType, wallEntityCollision);
 		_space.listeners.add(_wallCollisionListener);
-		_entityCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _entityCollisionType, _entityCollisionType, onEntityEntityCollision);
+		_entityCollisionListener = new InteractionListener(CbEvent.BEGIN, InteractionType.COLLISION, _entityCollisionType, _entityCollisionType, entityEntityCollision);
 		_space.listeners.add(_entityCollisionListener);
 		
-		debug = new ShapeDebug(Std.int(width), Std.int(height));
-		FlxG.addChildBelowMouse(debug.display);
+		_debug = new ShapeDebug(Std.int(width), Std.int(height));
+		FlxG.addChildBelowMouse(_debug.display);
 	}
 	
-	function onWallEntityCollision(collision:InteractionCallback) {
-		trace('wall collision');
+	function wallEntityCollision(collision:InteractionCallback) { 
+		trace('wall collision'); 
 	}
-	function onEntityEntityCollision(collision:InteractionCallback) {
-		trace('entity collision');
-		
-		
-		
+	function entityEntityCollision(collision:InteractionCallback) {
+		onEntityEntityCollision.dispatch(collision.int1.userData.entity, collision.int2.userData.entity);		
 	}
 	
 	function addEdges(xp:Float, yp:Float, width:Float, height:Float) {// TODO different spaces?
@@ -77,11 +77,11 @@ class PhysicsSimulation
 		drawDebug();
 	}
 	function drawDebug():Void {
-		if (debug == null || _space == null){ return; }
-		debug.clear();
-		debug.draw(_space);
+		if (_debug == null || _space == null){ return; }
+		_debug.clear();
+		_debug.draw(_space);
 		var zoom = FlxG.camera.zoom;
-		var sprite = debug.display;
+		var sprite = _debug.display;
 		sprite.scaleX = zoom;
 		sprite.scaleY = zoom;
 		sprite.x = -FlxG.camera.scroll.x * zoom;
@@ -99,6 +99,6 @@ class PhysicsSimulation
 		_wallCollisionListener = null;
 		_wallCollisionType = null;
 		_entityCollisionType = null;
-		debug = null;
+		_debug = null;
 	}
 }

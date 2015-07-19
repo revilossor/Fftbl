@@ -18,7 +18,10 @@ class PhysicsState extends BaseState
 	function initPhysics(width, height) {
 		trace('init new physics simulation');
 	 	_physics = new PhysicsSimulation(0, 0, width, height);
+		_physics.onEntityEntityCollision.add(onEntityEntityCollision);
 	}
+	function onEntityEntityCollision(entity1:PhysicsEntity, entity2:PhysicsEntity) {}
+	
 	override public function add(entity){ // TODO remove also removes from physics
 		super.add(entity);
 		if (_physics != null && Std.is(entity, PhysicsEntity)) { _physics.add(entity); }

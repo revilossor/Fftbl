@@ -43,13 +43,15 @@ class PhysicsEntity extends PoolableEntity
 		super.destroy();
 	}
 	
-	function makeBoxBody(material:Material) {
+	function makeBoxBody(material:Material) {		// TODO bodyFactory class?
 		body.shapes.add(new Polygon(Polygon.box(width, height, true), material));
 		body.position.setxy(x + width / 2, y + height / 2);
+		body.userData.entity = this;
 	}
 	function makeCircleBody(material:Material) {
 		body.shapes.add(new Polygon(Polygon.regular(width / 2, height / 2, 32, 0.0, true), material));
 		body.position.setxy(x + width / 2, y + height / 2);
+		body.userData.entity = this;
 	}
 	
 	public function move(by:Vec2) {

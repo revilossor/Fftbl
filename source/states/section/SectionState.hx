@@ -1,4 +1,5 @@
 package states.section;
+import core.entity.PhysicsEntity;
 import core.InputDelegate.Swipe;
 import core.nape.PhysicsSimulation;
 import core.world.tiled.TiledLevel;
@@ -25,11 +26,17 @@ class SectionState extends PhysicsState
 		Reg.input.onHeldTick.add(onHeldTick);
 		Reg.input.onReleased.add(onReleased);
 		_level = new TiledLevel("assets/data/sections/test.tmx");
-		_physics = new PhysicsSimulation(0, 0, _level.fullWidth, _level.fullHeight);
+		initPhysics(_level.fullWidth, _level.fullHeight);
 		add(_level.environment);
 		add(_player = new Player(0, 0));
 		add(Reg.hud);
 	}
+	
+	override function onEntityEntityCollision(entity1:PhysicsEntity, entity2:PhysicsEntity) {
+		if (entity1 == _player) { onPlayerEntityCollision(entity2); }
+		else if (entity2 == _player) { onPlayerEntityCollision(entity1); }
+	}
+	function onPlayerEntityCollision(entity) {}
 	
 	function setPaused(value:Bool) {
 		Reg.hud.setPause(Reg.model.settings.isPaused = value);
